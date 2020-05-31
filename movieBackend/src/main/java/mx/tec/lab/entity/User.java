@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 public class User {
     @Id
     @GeneratedValue
+    @JsonIgnore
     private long id;
 
     @NotBlank(message = "Name is mandatory")
