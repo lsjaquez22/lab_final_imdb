@@ -1,7 +1,7 @@
 package mx.tec.lab.controller;
 
 import mx.tec.lab.entity.User;
-import mx.tec.lab.exception.UserBadRequest;
+import mx.tec.lab.exception.GenericBadRequest;
 import mx.tec.lab.exception.UserNotFoundException;
 import mx.tec.lab.exception.UserUnauthorized;
 import mx.tec.lab.repository.UserRepository;
@@ -34,7 +34,7 @@ public class SessionRestController {
             user = userRepository.findByEmail(userResponse.get(KEY_EMAIL));
             hashedPassword = SessionHandler.getInstance().hashedString(userResponse.get(KEY_PASSWORD));
         } else {
-            throw new UserBadRequest();
+            throw new GenericBadRequest();
         }
 
 
