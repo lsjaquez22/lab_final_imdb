@@ -27,6 +27,8 @@ Every request must contain the header key, <i>Token</i> and a valid token string
 
 > GET : **api/movie/{imdbID}**
 
+> GET : **api/movie/search**
+
 
 ### Sessions
 
@@ -154,4 +156,46 @@ ___
     
 
 
+___
+
+### Get movies by search
+
+
+> GET: api/movie/search
+
+> Query Params: 
+- title: required; separated by +, _ or by space
+- page: optional
+
+> Response: List of objects. Status: 200
+
+> Unsuccessful search returns an empty list
+
+> Example query: **api/movie/search?title=the+office**
+
+
+    [
+        {
+            "Title": "The Office",
+            "Year": "2005–2013",
+            "imdbID": "tt0386676",
+            "Type": "series",
+            "Poster": "https://m.media-amazon.com/images/M/MV5BMDNkOTE4NDQtMTNmYi00MWE0LWE4ZTktYTc0NzhhNWIzNzJiXkEyXkFqcGdeQXVyMzQ2MDI5NjU@._V1_SX300.jpg"
+        },
+        {
+            "Title": "The Office",
+            "Year": "2001–2003",
+            "imdbID": "tt0290978",
+            "Type": "series",
+            "Poster": "https://m.media-amazon.com/images/M/MV5BNGI4YWZhZDAtMjYwNC00YWJjLTgzODQtNmQ0OTI2NGQzMWUwXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg"
+        },
+        {
+            "Title": "The Office",
+            "Year": "2019–",
+            "imdbID": "tt8305218",
+            "Type": "series",
+            "Poster": "https://m.media-amazon.com/images/M/MV5BZTFmNzMxYzktODVjZC00ZDNkLTgzYTYtMTBkNDg1OGMzYmE1XkEyXkFqcGdeQXVyMjUxMTY3ODM@._V1_SX300.jpg"
+        }
+    ]
+    
 ___
