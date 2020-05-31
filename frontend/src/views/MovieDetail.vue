@@ -22,7 +22,7 @@ export default {
 @import "../styles/_variables.scss";
 
 .container-movie {
-  height: 100vh;
+  min-height: 100vh;
   background-color: $black;
   p {
     color: $white;

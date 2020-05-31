@@ -1,0 +1,130 @@
+<template>
+  <div class="container-movies-list">
+    <div class="columns is-gapless">
+      <div class="column is-1"></div>
+      <div class="column">
+        <h1 class="title">List of Movies</h1>
+        <div class="movies">
+          <CardMovie v-for="element in list_movies" :key="element.imdbID" :movie="element" />
+        </div>
+      </div>
+      <div class="column is-1"></div>
+    </div>
+  </div>
+</template>
+
+<script>
+import CardMovie from "../components/card_movie.vue";
+export default {
+  name: "Movie",
+  components: {
+    CardMovie
+  },
+  data() {
+    return {
+      list_movies: [
+        {
+          Title: "Harry Potter and the Deathly Hallows: Part 2",
+          Year: "2011",
+          imdbID: "tt1201607",
+          Type: "movie",
+          Poster:
+            "https://m.media-amazon.com/images/M/MV5BMjIyZGU4YzUtNDkzYi00ZDRhLTljYzctYTMxMDQ4M2E0Y2YxXkEyXkFqcGdeQXVyNTIzOTk5ODM@._V1_SX300.jpg"
+        },
+        {
+          imdbID: "tt0241527",
+          Year: "2001",
+          Type: "movie",
+          Title: "Harry Potter and the Sorcerer's Stone",
+          Poster:
+            "https://m.media-amazon.com/images/M/MV5BNjQ3NWNlNmQtMTE5ZS00MDdmLTlkZjUtZTBlM2UxMGFiMTU3XkEyXkFqcGdeQXVyNjUwNzk3NDc@._V1_SX300.jpg"
+        },
+        {
+          Year: "2002",
+          imdbID: "tt0295297",
+          Type: "movie",
+          Title: "Harry Potter and the Chamber of Secrets",
+          Poster:
+            "https://m.media-amazon.com/images/M/MV5BMTcxODgwMDkxNV5BMl5BanBnXkFtZTYwMDk2MDg3._V1_SX300.jpg"
+        },
+        {
+          Title: "Harry Potter and the Prisoner of Azkaban",
+          Year: "2004",
+          imdbID: "tt0304141",
+          Type: "movie",
+          Poster:
+            "https://m.media-amazon.com/images/M/MV5BMTY4NTIwODg0N15BMl5BanBnXkFtZTcwOTc0MjEzMw@@._V1_SX300.jpg"
+        },
+        {
+          Title: "Harry Potter and the Goblet of Fire",
+          Year: "2005",
+          imdbID: "tt0330373",
+          Type: "movie",
+          Poster:
+            "https://m.media-amazon.com/images/M/MV5BMTI1NDMyMjExOF5BMl5BanBnXkFtZTcwOTc4MjQzMQ@@._V1_SX300.jpg"
+        },
+        {
+          Title: "Harry Potter and the Order of the Phoenix",
+          Year: "2007",
+          imdbID: "tt0373889",
+          Type: "movie",
+          Poster:
+            "https://m.media-amazon.com/images/M/MV5BMTM0NTczMTUzOV5BMl5BanBnXkFtZTYwMzIxNTg3._V1_SX300.jpg"
+        },
+        {
+          Title: "Harry Potter and the Deathly Hallows: Part 1",
+          Year: "2010",
+          imdbID: "tt0926084",
+          Type: "movie",
+          Poster:
+            "https://m.media-amazon.com/images/M/MV5BMTQ2OTE1Mjk0N15BMl5BanBnXkFtZTcwODE3MDAwNA@@._V1_SX300.jpg"
+        },
+        {
+          Title: "Harry Potter and the Half-Blood Prince",
+          Year: "2009",
+          imdbID: "tt0417741",
+          Type: "movie",
+          Poster:
+            "https://m.media-amazon.com/images/M/MV5BNzU3NDg4NTAyNV5BMl5BanBnXkFtZTcwOTg2ODg1Mg@@._V1_SX300.jpg"
+        },
+        {
+          Title: "Harry Potter and the Chamber of Secrets",
+          Year: "2002",
+          imdbID: "tt0304140",
+          Type: "game",
+          Poster:
+            "https://m.media-amazon.com/images/M/MV5BNTM4NzQ2NjA4NV5BMl5BanBnXkFtZTgwODAwMjE4MDE@._V1_SX300.jpg"
+        },
+        {
+          Title: "Harry Potter and the Forbidden Journey",
+          Year: "2010",
+          imdbID: "tt1756545",
+          Type: "movie",
+          Poster:
+            "https://m.media-amazon.com/images/M/MV5BNDM0YzMyNGUtMTU1Yy00OTE2LWE5NzYtZDZhMTBmN2RkNjg3XkEyXkFqcGdeQXVyMzU5NjU1MDA@._V1_SX300.jpg"
+        }
+      ]
+    };
+  }
+};
+</script>
+
+<style lang="scss">
+@import "../styles/_variables.scss";
+
+.container-movies-list {
+  min-height: 100vh;
+  background-color: $black;
+  h1 {
+    color: $white;
+    margin-top: 2em;
+    margin-bottom: 1em;
+  }
+  .movies {
+    margin-top: 2em;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+</style>

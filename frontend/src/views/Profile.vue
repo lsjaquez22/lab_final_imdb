@@ -15,7 +15,7 @@ export default {
 @import "../styles/_variables.scss";
 
 .container-profile {
-  height: 100vh;
+  min-height: 100vh;
   background-color: $black;
   h1 {
     color: $white;
