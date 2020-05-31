@@ -1,0 +1,160 @@
+<template>
+  <div>
+    <!-- Revisar si esta registrado v-if="isLogged" -->
+    <div v-if="true" id="app" class="collapse" aria-expanded="true">
+      <nav
+        class="navbar is-fixed-top is-transparent"
+        role="navigation"
+        aria-label="main navigation"
+      >
+        <div class="navbar-brand">
+          <router-link class="navbar-item" to="/">
+            <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28" />
+          </router-link>
+
+          <a
+            role="button"
+            class="navbar-burger burger"
+            aria-label="menu"
+            aria-expanded="false"
+            data-target="navbarBasicExample"
+            v-on:click="showNav = !showNav"
+          >
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+
+        <div id="navbarBasicExample" class="navbar-menu" v-bind:class="{ 'is-active' : showNav }">
+          <div class="navbar-start">
+            <div class="search-bar">
+              <p class="control has-icons-left has-icons-right">
+                <input class="input" type="text" placeholder="@Username / Movie" v-model="movie" />
+                <span class="icon is-small is-left">
+                  <i class="fas fa-search"></i>
+                </span>
+              </p>
+            </div>
+            <router-link
+              class="navbar-item"
+              :to="{name:'Movie', params: {movie_name: 'Harry Potter'}}"
+            >
+              <button class="button is-primary">
+                <strong>Search Movie</strong>
+              </button>
+            </router-link>
+            <router-link class="navbar-item" :to="{name:'User', params: {user_name: 'lsjaquez'}}">
+              <button class="button is-primary">
+                <strong>Search User</strong>
+              </button>
+            </router-link>
+          </div>
+
+          <div class="navbar-end">
+            <router-link class="navbar-item" to="/profile">
+              <button class="button is-primary">
+                <strong>Profile</strong>
+              </button>
+            </router-link>
+            <router-link class="navbar-item" to="/">
+              <button v-on:click="onClick()" class="button is-primary">
+                <strong>Log Out</strong>
+              </button>
+            </router-link>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <div v-else id="app" class="collapse" aria-expanded="true">
+      <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <a class="navbar-item" href="https://bulma.io">
+            <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28" />
+          </a>
+
+          <a
+            role="button"
+            class="navbar-burger burger"
+            aria-label="menu"
+            aria-expanded="false"
+            data-target="navbarBasicExample"
+            v-on:click="showNav = !showNav"
+          >
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+
+        <div id="navbarBasicExample" class="navbar-menu" v-bind:class="{ 'is-active' : showNav }">
+          <div class="navbar-end">
+            <div class="navbar-item">
+              <div class="buttons">
+                <router-link to="/register" class="button is-primary">
+                  <strong>Registrarse</strong>
+                </router-link>
+                <router-link to="/login" class="button is-light">Ingresar</router-link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "navbar",
+  data() {
+    return {
+      showNav: false,
+      movie: null
+    };
+  },
+  computed: {
+    isLogged() {
+      return this.$store.state.isLogged;
+    }
+  },
+  methods: {
+    showButtton(state) {
+      return state;
+    },
+    onClick() {
+      //   this.$store.dispatch("logout");
+      //   this.$router.push({ name: "Login" });
+    }
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+@import "../styles/_variables.scss";
+
+a {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#app {
+  .navbar {
+    background-color: $black;
+  }
+  a {
+    background-color: $black;
+  }
+  .is-primary {
+    background-color: $purple;
+    strong {
+      color: $white;
+    }
+  }
+}
+
+.search-bar {
+  margin: auto;
+  padding: 0 10px;
+}
+</style>
