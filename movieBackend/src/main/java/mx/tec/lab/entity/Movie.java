@@ -1,12 +1,14 @@
 package mx.tec.lab.entity;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "movie", uniqueConstraints={@UniqueConstraint(columnNames={"imdbID"})})
-public class Movie {
+public class Movie implements Serializable {
     @Id
     @GeneratedValue
     @JsonIgnore
@@ -15,17 +17,40 @@ public class Movie {
     @Column(name = "imdbID")
     private String imdbID;
 
+    @JsonAlias("Title")
     private String title;
+
+    @JsonAlias("Year")
     private String year;
+
+    @JsonAlias("Released")
     private String released;
+
+    @JsonAlias("Genre")
     private String genre;
+
+    @JsonAlias("Director")
     private String director;
+
+    @JsonAlias("Writer")
     private String writer;
+
+    @JsonAlias("Actors")
     private String actors;
+
+    @JsonAlias("Plot")
     private String plot;
+
+    @JsonAlias("Language")
     private String language;
+
+    @JsonAlias("Country")
     private String country;
+
+    @JsonAlias("Awards")
     private String awards;
+
+    @JsonAlias("Poster")
     private String poster;
 
     private float score;
