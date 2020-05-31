@@ -21,6 +21,13 @@ Every request must contain the header key, <i>Token</i> and a valid token string
 > GET user by id: **api/user**
 
 
+### Movies
+
+> GET : **api/movie**
+
+> GET : **api/movie/{imdbID}**
+
+
 ### Sessions
 
 > POST : **api/login**
@@ -97,6 +104,54 @@ ___
         "password": <hashed_password>,
         "username": "username"
     }
+
+
+___
+
+
+### Get movie by imdbID
+
+
+> GET: api/movie/{imdbID}
+
+> Response: Movie object. Status: 200
+
+    {
+        "imdbID": "tt0386676",
+        "title": "The Office",
+        "year": "2005–2013",
+        "released": "24 Mar 2005",
+        "genre": "Comedy",
+        "director": "N/A",
+        "writer": "Greg Daniels, Ricky Gervais, Stephen Merchant",
+        "actors": "Rainn Wilson, John Krasinski, Jenna Fischer, Leslie David Baker",
+        "plot": "A mockumentary on a group of typical office workers, where the workday consists of ego clashes, inappropriate behavior, and tedium.",
+        "language": "English",
+        "country": "USA",
+        "awards": "Won 1 Golden Globe. Another 47 wins & 186 nominations.",
+        "poster": "https://m.media-amazon.com/images/M/MV5BMDNkOTE4NDQtMTNmYi00MWE0LWE4ZTktYTc0NzhhNWIzNzJiXkEyXkFqcGdeQXVyMzQ2MDI5NjU@._V1_SX300.jpg",
+        "score": 0.0
+    }
+
+
+___
+
+### Get movies in local db
+
+
+> GET: api/movie
+
+> Response: Movie objects. Status: 200
+
+    [
+        {
+            ...
+        },
+        {
+            ...
+        }
+    ]
+    
 
 
 ___
