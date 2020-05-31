@@ -54,4 +54,15 @@ public class SessionHandler {
         return org.apache.commons.codec.digest.DigestUtils.sha256Hex(text);
     }
 
+    // Develop purposes
+    public String setDefaultUser(User user) {
+        if (loggedUsers.contains(user.getId())) {
+            return "";
+        }
+        String defaultKey = "default";
+        sessions.put(defaultKey, user.getId());
+        loggedUsers.add(user.getId());
+        return defaultKey;
+    }
+
 }
