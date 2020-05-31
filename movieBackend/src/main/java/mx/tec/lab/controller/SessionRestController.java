@@ -30,8 +30,8 @@ public class SessionRestController {
         User user = null;
         String hashedPassword = null;
 
-        if (userResponse.containsKey(KEY_EMAIL) && userResponse.containsKey(KEY_PASSWORD)) {
-            user = userRepository.findByEmail(userResponse.get(KEY_EMAIL));
+        if (userResponse.containsKey(KEY_USERNAME) && userResponse.containsKey(KEY_PASSWORD)) {
+            user = userRepository.findByUsername(userResponse.get(KEY_USERNAME));
             hashedPassword = SessionHandler.getInstance().hashedString(userResponse.get(KEY_PASSWORD));
         } else {
             throw new UserBadRequest();
