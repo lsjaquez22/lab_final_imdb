@@ -1,5 +1,5 @@
 <template>
-  <div class="about">
+  <div class="container-profile">
     <h1>This is a profile page</h1>
   </div>
 </template>
@@ -10,4 +10,16 @@ export default {
   components: {}
 };
 </script>
+
+<style lang="scss">
+@import "../styles/_variables.scss";
+
+.container-profile {
+  height: 100vh;
+  background-color: $black;
+  h1 {
+    color: $white;
+  }
+}
+</style>
 

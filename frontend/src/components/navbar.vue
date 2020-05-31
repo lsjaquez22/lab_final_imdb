@@ -2,7 +2,11 @@
   <div>
     <!-- Revisar si esta registrado v-if="isLogged" -->
     <div v-if="true" id="app" class="collapse" aria-expanded="true">
-      <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+      <nav
+        class="navbar is-fixed-top is-transparent"
+        role="navigation"
+        aria-label="main navigation"
+      >
         <div class="navbar-brand">
           <router-link class="navbar-item" to="/">
             <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28" />
@@ -24,14 +28,27 @@
 
         <div id="navbarBasicExample" class="navbar-menu" v-bind:class="{ 'is-active' : showNav }">
           <div class="navbar-start">
-            <div class="field search-bar">
+            <div class="search-bar">
               <p class="control has-icons-left has-icons-right">
-                <input class="input" type="text" placeholder="@Username / Movie" />
+                <input class="input" type="text" placeholder="@Username / Movie" v-model="movie" />
                 <span class="icon is-small is-left">
                   <i class="fas fa-search"></i>
                 </span>
               </p>
             </div>
+            <router-link
+              class="navbar-item"
+              :to="{name:'Movie', params: {movie_name: 'Harry Potter'}}"
+            >
+              <button class="button is-primary">
+                <strong>Search Movie</strong>
+              </button>
+            </router-link>
+            <router-link class="navbar-item" :to="{name:'User', params: {user_name: 'lsjaquez'}}">
+              <button class="button is-primary">
+                <strong>Search User</strong>
+              </button>
+            </router-link>
           </div>
 
           <div class="navbar-end">
@@ -92,7 +109,8 @@ export default {
   name: "navbar",
   data() {
     return {
-      showNav: false
+      showNav: false,
+      movie: null
     };
   },
   computed: {
@@ -101,6 +119,9 @@ export default {
     }
   },
   methods: {
+    showButtton(state) {
+      return state;
+    },
     onClick() {
       //   this.$store.dispatch("logout");
       //   this.$router.push({ name: "Login" });
@@ -108,11 +129,30 @@ export default {
   }
 };
 </script>
+
 <style lang="scss" scoped>
+@import "../styles/_variables.scss";
+
 a {
   font-size: 20px;
   font-weight: bold;
 }
+
+#app {
+  .navbar {
+    background-color: $black;
+  }
+  a {
+    background-color: $black;
+  }
+  .is-primary {
+    background-color: $purple;
+    strong {
+      color: $white;
+    }
+  }
+}
+
 .search-bar {
   margin: auto;
   padding: 0 10px;

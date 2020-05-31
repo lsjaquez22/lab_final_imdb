@@ -10,3 +10,12 @@ export default {
   components: {}
 };
 </script>
+
+<style lang="scss" scoped>
+@import "../styles/_variables.scss";
+
+.home {
+  height: 100vh;
+  background-color: $black;
+}
+</style>
