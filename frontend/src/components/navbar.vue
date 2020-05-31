@@ -30,14 +30,19 @@
           <div class="navbar-start">
             <div class="search-bar">
               <p class="control has-icons-left has-icons-right">
-                <input class="input" type="text" placeholder="@Username / Movie" v-model="movie" />
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="@Username / Movie"
+                  v-model="to_search"
+                />
                 <span class="icon is-small is-left">
                   <i class="fas fa-search"></i>
                 </span>
               </p>
             </div>
             <router-link class="navbar-item" :to="{name:'SearchMovie'}">
-              <button class="button is-primary">
+              <button class="button is-primary" v-on:click="search()" :disabled="valid_search">
                 <strong>Search</strong>
               </button>
             </router-link>
@@ -109,21 +114,30 @@ export default {
   data() {
     return {
       showNav: false,
-      movie: null
+      to_search: ""
     };
   },
   computed: {
     isLogged() {
       return this.$store.state.isLogged;
+    },
+    valid_search() {
+      if (this.to_search[0] == "@" && this.to_search.length > 1) {
+        return false;
+      } else if (this.to_search[0] != "@" && this.to_search.length > 0) {
+        return false;
+      }
+      return true;
     }
   },
   methods: {
     showButtton(state) {
       return state;
     },
-    onClick() {
-      //   this.$store.dispatch("logout");
-      //   this.$router.push({ name: "Login" });
+    search() {
+      if (this.to_search[0] != "@") {
+        this.$store.dispatch("get_suggested_movies", this.to_search);
+      }
     }
   }
 };

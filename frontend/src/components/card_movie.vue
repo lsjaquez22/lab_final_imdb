@@ -44,12 +44,15 @@ export default {
 
 <style lang="scss" scoped>
 .container-card {
-  max-width: 260px;
+  width: 260px;
   margin: 0 2em 2em 2em;
   a {
     .title {
       margin-bottom: 10px;
     }
+  }
+  .card-content {
+    height: 160px;
   }
 }
 </style>
