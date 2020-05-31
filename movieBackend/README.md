@@ -54,7 +54,6 @@ HTTP 401: unauthorized. Missing token.
     {
         "token": "05165665bee34cedac21feceb36a7dc5",
         "user": {
-            "id": <number>,
             "name": "Full name",
             "email": "user@gmail.com",
             "username": "username",
