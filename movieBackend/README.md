@@ -20,6 +20,8 @@ Every request must contain the header key, <i>Token</i> and a valid token string
 
 > GET user by id: **api/user**
 
+> GET user by username: **api/user/{username}**
+
 
 ### Movies
 
@@ -87,7 +89,7 @@ ___
 
 ### New user 
 
-> POST: api/users
+> POST: **api/users**
 
 > Response: User object. Status: 200
 
@@ -107,7 +109,7 @@ ___
 ### Return current user
 
 
-> GET: api/user
+> GET: **api/user**
 
 > Response: User object. Status: 200
 
@@ -116,6 +118,43 @@ ___
         "email": "user@gmail.com",
         "password": <hashed_password>,
         "username": "username"
+    }
+
+
+___
+
+
+### Return User by username
+
+
+> GET: **api/user/{username}**
+
+> Response: Object with User, sorted watchlist, isFriend. Status: 200
+
+    {
+        "user": {
+            "name": "Name Lastname",
+            "email": "user@gmail.com",
+            "username": "username",
+            "password": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4"
+        },
+        "watchList": [
+            {
+                "title": "Mulan",
+                "year": "1998",
+                "imdbID": "tt0120762",
+                "poster": "https://m.media-amazon.com/images/M/MV5BODkxNGQ1NWYtNzg0Ny00Yjg3LThmZTItMjE2YjhmZTQ0ODY5XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
+                "state": "WATCHING"
+            },
+            {
+                "title": "Harry Potter and the Sorcerer's Stone",
+                "year": "2001",
+                "imdbID": "tt0241527",
+                "poster": "https://m.media-amazon.com/images/M/MV5BNjQ3NWNlNmQtMTE5ZS00MDdmLTlkZjUtZTBlM2UxMGFiMTU3XkEyXkFqcGdeQXVyNjUwNzk3NDc@._V1_SX300.jpg",
+                "state": "PLAN_TO_WATCH"
+            }
+        ],
+        "friend": false
     }
 
 

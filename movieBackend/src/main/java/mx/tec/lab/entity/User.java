@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -80,6 +82,11 @@ public class User {
 
     public void setWatchLists(Set<UserMovieWatchList> watchLists) {
         this.watchLists = watchLists;
+    }
+
+    @JsonIgnore
+    public List<UserMovieWatchList> getWatchListsAsList() {
+        return new ArrayList<>(watchLists);
     }
 }
 

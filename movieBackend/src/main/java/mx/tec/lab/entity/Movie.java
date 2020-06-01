@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name = "movie", uniqueConstraints={@UniqueConstraint(columnNames={"imdbID"})})
+@Table(name = "movie")
 public class Movie implements Serializable {
     @Id
     @GeneratedValue
