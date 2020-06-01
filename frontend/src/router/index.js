@@ -8,24 +8,28 @@ const routes = [
     path: "/",
     name: "Home",
     component: () => import(/* webpackChunkName: "Home" */ "../views/Home.vue"),
+    meta: { requiresAuth: true },
   },
   {
     path: "/profile",
     name: "Profile",
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Profile.vue"),
+    meta: { requiresAuth: true },
   },
   {
     path: "/movie/:movie_name",
     name: "Movie",
     component: () =>
       import(/* webpackChunkName: "movie" */ "../views/MovieDetail.vue"),
+    meta: { requiresAuth: true },
   },
   {
     path: "/user/:user_name",
     name: "User",
     component: () =>
       import(/* webpackChunkName: "user" */ "../views/UserDetail.vue"),
+    meta: { requiresAuth: true },
   },
   {
     path: "/login",
@@ -50,6 +54,20 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!sessionStorage.getItem("token")) {
+      next({
+        name: "Login",
+      });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;
