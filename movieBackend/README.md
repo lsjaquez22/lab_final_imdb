@@ -199,3 +199,48 @@ ___
     ]
     
 ___
+
+### Get user score by movie
+
+
+> GET: api/movie/{imdbID}/score
+
+> Response: float score . Status: 200
+
+> Score not found return 0.0 as score
+
+> Example query: **api/movie/tt0275847/score**
+
+    3.5
+    
+___
+
+### Set user score to movie
+
+
+> POST: api/movie/score
+
+> Provide the following structure in body:
+
+    {
+    	"imdbID" : "tt0275847",
+    	"score": "2.75"
+    }
+
+> Successful post request Status: 200
+___
+
+### Update user score to movie
+
+
+> PUT: api/movie/score
+
+> Provide the following structure in body:
+
+    {
+    	"imdbID" : "tt0275847",
+    	"score": "2.75"
+    }
+
+> Successful post request Status: 200
+___
