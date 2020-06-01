@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Revisar si esta registrado v-if="isLogged" -->
-    <div v-if="true" id="app" class="collapse" aria-expanded="true">
+    <div v-if="false" id="app" class="collapse" aria-expanded="true">
       <nav
         class="navbar is-fixed-top is-transparent"
         role="navigation"
@@ -90,14 +90,14 @@
 
         <div id="navbarBasicExample" class="navbar-menu" v-bind:class="{ 'is-active' : showNav }">
           <div class="navbar-end">
-            <router-link class="navbar-item" to="/profile">
+            <router-link class="navbar-item" to="/signup">
               <button class="button is-primary">
-                <strong>Profile</strong>
+                <strong>Sign Up</strong>
               </button>
             </router-link>
-            <router-link class="navbar-item" to="/">
+            <router-link class="navbar-item" to="/login">
               <button v-on:click="onClick()" class="button is-primary">
-                <strong>Log Out</strong>
+                <strong>Login</strong>
               </button>
             </router-link>
           </div>
