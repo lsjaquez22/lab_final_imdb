@@ -99,3 +99,60 @@ export const recomended_users = [
     name: "Christopher Delgado",
   },
 ];
+
+export const friends_users = [
+  {
+    username: "HMH",
+    name: "Humberto Morales",
+  },
+  {
+    username: "Charlie",
+    name: "Carlos de la Rosa",
+  },
+  {
+    username: "ElDani",
+    name: "Daniel Chaparro",
+  },
+  {
+    username: "LaRojas",
+    name: "Abril Rojas",
+  },
+];
+
+export const user_info = {
+  token: "05165665bee34cedac21feceb36a7dc5",
+  user: {
+    name: "Full name",
+    email: "user@gmail.com",
+    username: "username",
+    password:
+      "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
+  },
+};
+
+export const user_movies = [
+  {
+    title: "Lilo & Stitch",
+    year: "2002",
+    imdbID: "tt0275847",
+    poster:
+      "https://m.media-amazon.com/images/M/MV5BMTkwOTU5MTA2M15BMl5BanBnXkFtZTYwMjYyNTc3._V1_SX300.jpg",
+    state: "WATCHING",
+  },
+  {
+    title: "Lilo & Stitch 2",
+    year: "2002",
+    imdbID: "tt02758472",
+    poster:
+      "https://m.media-amazon.com/images/M/MV5BMTkwOTU5MTA2M15BMl5BanBnXkFtZTYwMjYyNTc3._V1_SX300.jpg",
+    state: "WATCHING",
+  },
+  {
+    title: "Lilo & Stitch 3",
+    year: "2002",
+    imdbID: "tt02758473",
+    poster:
+      "https://m.media-amazon.com/images/M/MV5BMTkwOTU5MTA2M15BMl5BanBnXkFtZTYwMjYyNTc3._V1_SX300.jpg",
+    state: "WATCHING",
+  },
+];
