@@ -80,3 +80,22 @@ export const recomended_movies = [
       "https://m.media-amazon.com/images/M/MV5BNDM0YzMyNGUtMTU1Yy00OTE2LWE5NzYtZDZhMTBmN2RkNjg3XkEyXkFqcGdeQXVyMzU5NjU1MDA@._V1_SX300.jpg",
   },
 ];
+
+export const recomended_users = [
+  {
+    username: "Lsjaquez",
+    name: "Luis Antonio Sanchez",
+  },
+  {
+    username: "klauskie",
+    name: "Klaus Kientzle",
+  },
+  {
+    username: "SalvadorRomeroB",
+    name: "Salvador Romero",
+  },
+  {
+    username: "ChristopherADG",
+    name: "Christopher Delgado",
+  },
+];

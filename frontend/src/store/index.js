@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
-import { recomended_movies } from "./data";
+import { recomended_movies, recomended_users } from "./data";
 
 Vue.use(Vuex);
 
@@ -9,6 +9,8 @@ export default new Vuex.Store({
   state: {
     search_movies: [],
     recommended_movies: [...recomended_movies],
+    search_users: [],
+    recommended_users: [...recomended_users],
   },
   mutations: {
     search_movies(state, movies_list) {
@@ -23,7 +25,6 @@ export default new Vuex.Store({
         method: "get",
         url: `http://www.omdbapi.com/?s=${movie_name}&apikey=fac0fe09`,
       }).then((response) => {
-        console.log(response);
         context.commit("search_movies", response.data.Search);
       });
     },

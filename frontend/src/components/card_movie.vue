@@ -26,7 +26,10 @@
           </div>-->
         </div>
         <footer class="card-footer">
-          <p href="#" class="card-footer-item subtitle">Add Movie</p>
+          <p href="#" class="card-footer-item subtitle">
+            Add Movie
+            <i class="fas fa-film"></i>
+          </p>
         </footer>
       </div>
     </div>
@@ -59,6 +62,9 @@ export default {
     background-color: $purple;
     p {
       color: $white;
+      i {
+        margin-left: 10px;
+      }
     }
   }
   .card-footer:hover {
