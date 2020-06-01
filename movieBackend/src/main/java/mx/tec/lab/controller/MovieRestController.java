@@ -88,6 +88,7 @@ public class MovieRestController {
 
         Movie newMovie = getMovieFromOMDBByID(imdbID);
         try {
+            System.out.println(newMovie.getWriter());
             movieRepository.save(newMovie);
         } catch (DataIntegrityViolationException e) {
             System.out.println(MovieRestController.class.getSimpleName() + ": " + e.getMessage());
@@ -121,5 +122,12 @@ public class MovieRestController {
         }
 
         return new ArrayList<>();
+    }
+
+    private String cutDownString(String str) {
+        if(str.length() > 255) {
+            return str.substring(0,250) + "...";
+        }
+        return str;
     }
 }

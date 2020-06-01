@@ -54,7 +54,7 @@ HTTP 401: unauthorized. Missing token.
 > Provide the following structure in body:
 
     {
-        "email": "user@gmail.com",
+        "username": "useruwu",
         "password": "1234"
     }
 
