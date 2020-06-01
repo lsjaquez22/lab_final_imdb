@@ -41,11 +41,11 @@
                 </span>
               </p>
             </div>
-            <router-link class="navbar-item" :to="{name:'SearchMovie'}">
+            <div class="navbar-item">
               <button class="button is-primary" v-on:click="search()" :disabled="valid_search">
                 <strong>Search</strong>
               </button>
-            </router-link>
+            </div>
           </div>
 
           <div class="navbar-end">
@@ -69,7 +69,6 @@
         role="navigation"
         aria-label="main navigation"
       >
-        >
         <div class="navbar-brand">
           <a class="navbar-item" href="https://bulma.io">
             <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28" />
@@ -137,7 +136,15 @@ export default {
     search() {
       if (this.to_search[0] != "@") {
         this.$store.dispatch("get_search_movies", this.to_search);
+        if (this.$route.path != "/search-movie") {
+          this.$router.push({ name: "SearchMovie" });
+        }
+      } else {
+        if (this.$route.path != "/search-user") {
+          this.$router.push({ name: "SearchUser" });
+        }
       }
+      this.to_search = "";
     }
   }
 };

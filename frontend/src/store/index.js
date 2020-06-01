@@ -9,7 +9,7 @@ export default new Vuex.Store({
   state: {
     search_movies: [],
     recommended_movies: [...recomended_movies],
-    search_users: [],
+    search_users: [...recomended_users],
     recommended_users: [...recomended_users],
   },
   mutations: {
