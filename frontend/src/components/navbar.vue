@@ -136,7 +136,7 @@ export default {
     },
     search() {
       if (this.to_search[0] != "@") {
-        this.$store.dispatch("get_suggested_movies", this.to_search);
+        this.$store.dispatch("get_search_movies", this.to_search);
       }
     }
   }

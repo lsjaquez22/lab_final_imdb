@@ -1,20 +1,22 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
+import { recomended_movies } from "./data";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    suggested_movies: [],
+    search_movies: [],
+    recommended_movies: [...recomended_movies],
   },
   mutations: {
-    suggested_movies(state, movies_list) {
-      state.suggested_movies = movies_list;
+    search_movies(state, movies_list) {
+      state.search_movies = movies_list;
     },
   },
   actions: {
-    get_suggested_movies(context, movie_name) {
+    get_search_movies(context, movie_name) {
       movie_name = movie_name.replace(" ", "_");
 
       axios({
@@ -22,7 +24,7 @@ export default new Vuex.Store({
         url: `http://www.omdbapi.com/?s=${movie_name}&apikey=fac0fe09`,
       }).then((response) => {
         console.log(response);
-        context.commit("suggested_movies", response.data.Search);
+        context.commit("search_movies", response.data.Search);
       });
     },
   },

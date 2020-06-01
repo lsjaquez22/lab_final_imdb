@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: "Movie",
+  name: "404",
   data() {
     return {
       user_name: this.$route.params.user_name

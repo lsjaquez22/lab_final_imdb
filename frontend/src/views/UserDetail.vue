@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "Movie",
+  name: "User",
   data() {
     return {
       user_name: this.$route.params.user_name

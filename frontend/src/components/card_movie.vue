@@ -26,7 +26,7 @@
           </div>-->
         </div>
         <footer class="card-footer">
-          <a href="#" class="card-footer-item">Add Movie</a>
+          <p href="#" class="card-footer-item subtitle">Add Movie</p>
         </footer>
       </div>
     </div>
@@ -35,7 +35,7 @@
 
 <script>
 export default {
-  name: "card-movie",
+  name: "CardMovie",
   props: {
     movie: Object
   }
@@ -43,6 +43,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../styles/_variables.scss";
 .container-card {
   width: 260px;
   margin: 0 2em 2em 2em;
@@ -53,6 +54,15 @@ export default {
   }
   .card-content {
     height: 160px;
+  }
+  .card-footer {
+    background-color: $purple;
+    p {
+      color: $white;
+    }
+  }
+  .card-footer:hover {
+    cursor: pointer;
   }
 }
 </style>

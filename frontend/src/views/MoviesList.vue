@@ -4,7 +4,7 @@
       <div class="column is-1"></div>
       <div class="column">
         <h1 class="title">List of Movies</h1>
-        <div class="movies">
+        <div class="movies-container">
           <CardMovie v-for="element in list_movies" :key="element.imdbID" :movie="element" />
         </div>
       </div>
@@ -16,7 +16,7 @@
 <script>
 import CardMovie from "../components/card_movie.vue";
 export default {
-  name: "Movie",
+  name: "Movielist",
   components: {
     CardMovie
   },
@@ -25,7 +25,7 @@ export default {
   },
   computed: {
     list_movies() {
-      return this.$store.state.suggested_movies;
+      return this.$store.state.search_movies;
     }
   }
 };
@@ -42,7 +42,7 @@ export default {
     margin-top: 2em;
     margin-bottom: 1em;
   }
-  .movies {
+  .movies-container {
     margin-top: 2em;
     display: flex;
     flex-wrap: wrap;
