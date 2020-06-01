@@ -57,11 +57,11 @@
                 <strong>Profile</strong>
               </button>
             </router-link>
-            <router-link class="navbar-item" to="/">
+            <div class="navbar-item">
               <button v-on:click="onClick()" class="button is-primary">
                 <strong>Log Out</strong>
               </button>
-            </router-link>
+            </div>
           </div>
         </div>
       </nav>
