@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Revisar si esta registrado v-if="isLogged" -->
-    <div v-if="true" id="app" class="collapse" aria-expanded="true">
+    <div v-if="false" id="app" class="collapse" aria-expanded="true">
       <nav
         class="navbar is-fixed-top is-transparent"
         role="navigation"
@@ -67,7 +67,12 @@
       </nav>
     </div>
     <div v-else id="app" class="collapse" aria-expanded="true">
-      <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+      <nav
+        class="navbar is-fixed-top is-transparent"
+        role="navigation"
+        aria-label="main navigation"
+      >
+        >
         <div class="navbar-brand">
           <a class="navbar-item" href="https://bulma.io">
             <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28" />
@@ -89,14 +94,16 @@
 
         <div id="navbarBasicExample" class="navbar-menu" v-bind:class="{ 'is-active' : showNav }">
           <div class="navbar-end">
-            <div class="navbar-item">
-              <div class="buttons">
-                <router-link to="/register" class="button is-primary">
-                  <strong>Registrarse</strong>
-                </router-link>
-                <router-link to="/login" class="button is-light">Ingresar</router-link>
-              </div>
-            </div>
+            <router-link class="navbar-item" to="/signup">
+              <button class="button is-primary">
+                <strong>Sign Up</strong>
+              </button>
+            </router-link>
+            <router-link class="navbar-item" to="/login">
+              <button v-on:click="onClick()" class="button is-primary">
+                <strong>Login</strong>
+              </button>
+            </router-link>
           </div>
         </div>
       </nav>
