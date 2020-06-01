@@ -16,7 +16,6 @@ export default new Vuex.Store({
     user: { ...user_info },
     friends_user: [...friends_users],
     movies_user: [...user_movies],
-    visit_user: {},
     search_movies: [],
     recommended_movies: [...recomended_movies],
     search_users: [...recomended_users],
