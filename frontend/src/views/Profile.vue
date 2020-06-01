@@ -1,13 +1,27 @@
 <template>
   <div class="container-profile">
-    <h1>This is a profile page</h1>
+    <div class="home">
+      <div class="columns is-gapless">
+        <div class="column">
+          <h1>{{user_info.username}}</h1>
+          <h1>{{user_info.email}}</h1>
+          <h1>{{user_info.name}}</h1>
+        </div>
+        <RecommendedFriends />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: "Profile",
-  components: {}
+  components: {},
+  computed: {
+    user_info() {
+      return this.$store.state.user.user;
+    }
+  }
 };
 </script>
 

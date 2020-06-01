@@ -99,3 +99,14 @@ export const recomended_users = [
     name: "Christopher Delgado",
   },
 ];
+
+export const user_info = {
+  token: "05165665bee34cedac21feceb36a7dc5",
+  user: {
+    name: "Full name",
+    email: "user@gmail.com",
+    username: "username",
+    password:
+      "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
+  },
+};
