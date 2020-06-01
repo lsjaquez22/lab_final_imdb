@@ -30,23 +30,20 @@
           <div class="navbar-start">
             <div class="search-bar">
               <p class="control has-icons-left has-icons-right">
-                <input class="input" type="text" placeholder="@Username / Movie" v-model="movie" />
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="@Username / Movie"
+                  v-model="to_search"
+                />
                 <span class="icon is-small is-left">
                   <i class="fas fa-search"></i>
                 </span>
               </p>
             </div>
-            <router-link
-              class="navbar-item"
-              :to="{name:'Movie', params: {movie_name: 'Harry Potter'}}"
-            >
-              <button class="button is-primary">
-                <strong>Search Movie</strong>
-              </button>
-            </router-link>
-            <router-link class="navbar-item" :to="{name:'User', params: {user_name: 'lsjaquez'}}">
-              <button class="button is-primary">
-                <strong>Search User</strong>
+            <router-link class="navbar-item" :to="{name:'SearchMovie'}">
+              <button class="button is-primary" v-on:click="search()" :disabled="valid_search">
+                <strong>Search</strong>
               </button>
             </router-link>
           </div>
@@ -67,7 +64,12 @@
       </nav>
     </div>
     <div v-else id="app" class="collapse" aria-expanded="true">
-      <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+      <nav
+        class="navbar is-fixed-top is-transparent"
+        role="navigation"
+        aria-label="main navigation"
+      >
+        >
         <div class="navbar-brand">
           <a class="navbar-item" href="https://bulma.io">
             <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28" />
@@ -89,14 +91,16 @@
 
         <div id="navbarBasicExample" class="navbar-menu" v-bind:class="{ 'is-active' : showNav }">
           <div class="navbar-end">
-            <div class="navbar-item">
-              <div class="buttons">
-                <router-link to="/register" class="button is-primary">
-                  <strong>Registrarse</strong>
-                </router-link>
-                <router-link to="/login" class="button is-light">Ingresar</router-link>
-              </div>
-            </div>
+            <router-link class="navbar-item" to="/profile">
+              <button class="button is-primary">
+                <strong>Profile</strong>
+              </button>
+            </router-link>
+            <router-link class="navbar-item" to="/">
+              <button v-on:click="onClick()" class="button is-primary">
+                <strong>Log Out</strong>
+              </button>
+            </router-link>
           </div>
         </div>
       </nav>
@@ -110,21 +114,30 @@ export default {
   data() {
     return {
       showNav: false,
-      movie: null
+      to_search: ""
     };
   },
   computed: {
     isLogged() {
       return this.$store.state.isLogged;
+    },
+    valid_search() {
+      if (this.to_search[0] == "@" && this.to_search.length > 1) {
+        return false;
+      } else if (this.to_search[0] != "@" && this.to_search.length > 0) {
+        return false;
+      }
+      return true;
     }
   },
   methods: {
     showButtton(state) {
       return state;
     },
-    onClick() {
-      //   this.$store.dispatch("logout");
-      //   this.$router.push({ name: "Login" });
+    search() {
+      if (this.to_search[0] != "@") {
+        this.$store.dispatch("get_search_movies", this.to_search);
+      }
     }
   }
 };

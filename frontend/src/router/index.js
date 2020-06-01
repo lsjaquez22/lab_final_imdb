@@ -28,6 +28,12 @@ const routes = [
       import(/* webpackChunkName: "user" */ "../views/UserDetail.vue"),
   },
   {
+    path: "/search-movie",
+    name: "SearchMovie",
+    component: () =>
+      import(/* webpackChunkName: "user" */ "../views/MoviesList.vue"),
+  },
+  {
     path: "*",
     name: "404",
     component: () => import(/* webpackChunkName: "404" */ "../views/404.vue"),
