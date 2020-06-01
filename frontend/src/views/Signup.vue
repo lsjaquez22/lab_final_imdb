@@ -13,7 +13,15 @@
       <p class="title is-4">Sign Up to start searching for the best movies!</p>
       <div class="field">
         <div class="control has-icons-left has-icons-right">
-          <input class="input is-rounded" type="text" placeholder="Userame" v-model="username" />
+          <input class="input is-rounded" type="text" placeholder="Name" v-model="name" />
+          <span class="icon is-small is-left">
+            <i class="fas fa-user"></i>
+          </span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="control has-icons-left has-icons-right">
+          <input class="input is-rounded" type="text" placeholder="Username" v-model="username" />
           <span class="icon is-small is-left">
             <i class="fas fa-user"></i>
           </span>
@@ -41,21 +49,7 @@
           </span>
         </div>
       </div>
-      <div class="field">
-        <div class="control has-icons-left has-icons-right">
-          <input
-            class="input is-rounded"
-            type="password"
-            placeholder="Confirm Password"
-            v-model.trim="confirmPassword"
-          />
-          <span class="icon is-small is-left">
-            <i class="fas fa-lock"></i>
-          </span>
-        </div>
-      </div>
-
-      <div class="field is-grouped">
+      <div class="field is-grouped actions">
         <div class="control">
           <button class="button is-primary is-link is-rounded">Create Account</button>
         </div>
@@ -75,8 +69,8 @@ export default {
   data: () => ({
     username: "",
     password: "",
-    confirmPassword: "",
-    email: ""
+    email: "",
+    name: ""
   })
 };
 </script>
@@ -86,6 +80,7 @@ export default {
 
 .bg {
   background-color: $purple;
+  min-height: 100vh;
 }
 .card {
   background-color: $white;
@@ -119,5 +114,8 @@ export default {
 }
 .is-primary:hover {
   background-color: $purple;
+}
+.actions {
+  margin: 10%;
 }
 </style>

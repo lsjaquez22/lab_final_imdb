@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Revisar si esta registrado v-if="isLogged" -->
-    <div v-if="false" id="app" class="collapse" aria-expanded="true">
+    <div v-if="isLogged" id="app" class="collapse" aria-expanded="true">
       <nav
         class="navbar is-fixed-top is-transparent"
         role="navigation"
@@ -100,7 +100,7 @@
               </button>
             </router-link>
             <router-link class="navbar-item" to="/login">
-              <button v-on:click="onClick()" class="button is-primary">
+              <button class="button is-primary">
                 <strong>Login</strong>
               </button>
             </router-link>
@@ -130,8 +130,8 @@ export default {
       return state;
     },
     onClick() {
-      //   this.$store.dispatch("logout");
-      //   this.$router.push({ name: "Login" });
+      this.$store.dispatch("logout");
+      this.$router.push({ name: "Login" });
     }
   }
 };
