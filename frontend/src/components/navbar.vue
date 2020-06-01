@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Revisar si esta registrado v-if="isLogged" -->
-    <div v-if="false" id="app" class="collapse" aria-expanded="true">
+    <div v-if="true" id="app" class="collapse" aria-expanded="true">
       <nav
         class="navbar is-fixed-top is-transparent"
         role="navigation"

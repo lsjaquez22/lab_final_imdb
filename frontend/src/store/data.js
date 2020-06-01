@@ -100,6 +100,25 @@ export const recomended_users = [
   },
 ];
 
+export const friends_users = [
+  {
+    username: "HMH",
+    name: "Humberto Morales",
+  },
+  {
+    username: "Charlie",
+    name: "Carlos de la Rosa",
+  },
+  {
+    username: "ElDani",
+    name: "Daniel Chaparro",
+  },
+  {
+    username: "LaRojas",
+    name: "Abril Rojas",
+  },
+];
+
 export const user_info = {
   token: "05165665bee34cedac21feceb36a7dc5",
   user: {

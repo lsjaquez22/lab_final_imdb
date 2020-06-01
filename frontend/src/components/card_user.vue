@@ -8,7 +8,7 @@
         </router-link>
       </div>
 
-      <div class="icon-add-friend">
+      <div v-if="!profile" class="icon-add-friend">
         <i class="fas fa-user-plus"></i>
       </div>
     </div>
@@ -19,7 +19,8 @@
 export default {
   name: "CardUser",
   props: {
-    user: Object
+    user: Object,
+    profile: Boolean
   }
 };
 </script>

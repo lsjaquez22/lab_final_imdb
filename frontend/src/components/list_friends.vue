@@ -1,21 +1,21 @@
 <template>
   <div class="column is-3 recomended-friends">
-    <p class="subtitle is-4">People You May Know</p>
-    <CardUser v-for="user in list_users" :key="user.username" :user="user" :profile="false" />
+    <p class="subtitle is-4">Friends</p>
+    <CardUser v-for="user in list_friends" :key="user.username" :user="user" :profile="true" />
   </div>
 </template>
 
 <script>
 import CardUser from "./card_user";
 export default {
-  name: "RecommendedFriends",
+  name: "ListFriends",
   props: {},
   components: {
     CardUser
   },
   computed: {
-    list_users() {
-      return this.$store.state.recommended_users;
+    list_friends() {
+      return this.$store.state.friends_user;
     }
   }
 };

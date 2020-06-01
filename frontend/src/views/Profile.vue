@@ -3,36 +3,52 @@
     <div class="home">
       <div class="columns is-gapless">
         <div class="column">
-          <h1>{{user_info.username}}</h1>
-          <h1>{{user_info.email}}</h1>
-          <h1>{{user_info.name}}</h1>
+          <InfoUser />
         </div>
-        <RecommendedFriends />
+        <ListFriends />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import ListFriends from "../components/list_friends.vue";
+import InfoUser from "../components/info_user.vue";
 export default {
   name: "Profile",
-  components: {},
-  computed: {
-    user_info() {
-      return this.$store.state.user.user;
-    }
-  }
+  components: { ListFriends, InfoUser }
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "../styles/_variables.scss";
 
-.container-profile {
-  min-height: 100vh;
-  background-color: $black;
-  h1 {
-    color: $white;
+#app {
+  .container-profile {
+    min-height: 100vh;
+    background-color: $black;
+    padding-top: 3em;
+    h1 {
+      color: $white;
+    }
+    .recomended-friends {
+      margin: 0 1em;
+    }
+    .button-edit-info {
+      text-align: end;
+      padding-right: 3em;
+      .is-primary {
+        background-color: $purple;
+        color: $white;
+      }
+    }
+    .field {
+      margin: 0 2em;
+      .label {
+        color: $white;
+        text-align: initial;
+      }
+    }
   }
 }
 </style>

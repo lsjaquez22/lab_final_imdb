@@ -1,14 +1,19 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
-import { recomended_movies, recomended_users, user_info } from "./data";
+import {
+  recomended_movies,
+  recomended_users,
+  user_info,
+  friends_users,
+} from "./data";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     user: { ...user_info },
-    firends_user: [...recomended_users],
+    friends_user: [...friends_users],
     search_movies: [],
     recommended_movies: [...recomended_movies],
     search_users: [...recomended_users],
