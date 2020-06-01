@@ -29,6 +29,17 @@ Every request must contain the header key, <i>Token</i> and a valid token string
 
 > GET : **api/movie/search**
 
+> GET : **api/movie/{imdbID}/score**
+
+> POST | PUT : **api/movie/score**
+
+
+### Watchlist
+
+> GET | POST | PUT : **api/watchlist**
+
+> DELETE : **api/watchlist/{imdbID}**
+
 
 ### Sessions
 
@@ -243,4 +254,70 @@ ___
     }
 
 > Successful post request Status: 200
+___
+
+
+### Get Watchlist
+
+> GET: **api/watchlist**
+
+> Response: Objects containing basic info + movie state
+
+> NOTE: the return list is grouped by MovieState and sorted in alphabetical order (by section).
+
+> The possible states are: WATCHING, COMPLETED, PLAN_TO_WATCH, ON_HOLD
+
+    [
+        {
+            "title": "The Office",
+            "year": "2005–2013",
+            "imdbID": "tt0386676",
+            "poster": "https://m.media-amazon.com/images/M/MV5BMDNkOTE4NDQtMTNmYi00MWE0LWE4ZTktYTc0NzhhNWIzNzJiXkEyXkFqcGdeQXVyMzQ2MDI5NjU@._V1_SX300.jpg",
+            "state": "COMPLETED"
+        },
+        {
+            "title": "Your Name.",
+            "year": "2016",
+            "imdbID": "tt5311514",
+            "poster": "https://m.media-amazon.com/images/M/MV5BODRmZDVmNzUtZDA4ZC00NjhkLWI2M2UtN2M0ZDIzNDcxYThjL2ltYWdlXkEyXkFqcGdeQXVyNTk0MzMzODA@._V1_SX300.jpg",
+            "state": "COMPLETED"
+        },
+        {
+            "title": "Harry Potter and the Chamber of Secrets",
+            "year": "2002",
+            "imdbID": "tt0295297",
+            "poster": "https://m.media-amazon.com/images/M/MV5BMTcxODgwMDkxNV5BMl5BanBnXkFtZTYwMDk2MDg3._V1_SX300.jpg",
+            "state": "ON_HOLD"
+        }
+    ]
+
+___
+
+
+### POST | PUT Watchlist
+
+> POST | PUT: **api/watchlist**
+
+> Response: string. HTTP status = 200
+
+> NOTES: POST sets state to WATCHING by default.
+
+> Request: 
+
+    {
+        "imdbID": "tt0275847",
+        "state": "WATCHING"
+    }
+
+___
+
+### DELETE Watchlist
+
+> DELETE: **api/watchlist/{imdbID}**
+
+> Response: string. HTTP status = 200
+
+> NOTES: Deletes record from list
+
+
 ___

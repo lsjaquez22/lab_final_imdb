@@ -61,19 +61,23 @@ public class WatchListController {
 
         Movie existingMovie = movieRepository.findByImdbID(requestMap.get(IMDB_ID_KEY));
         if (existingMovie == null) {
-            throw new GenericBadRequest();
+            throw new GenericBadRequest("Movie not saved on local db...");
         }
 
         UserMovieWatchList existingMovieInList = watchListRepository.findByUserIdAndMovieId(userId, existingMovie.getId());
         if (existingMovieInList != null) {
-            throw new GenericBadRequest("Movie already on list...");
+            throw new GenericBadRequest("Movie not found locally...");
         }
 
         try {
             UserMovieWatchList userMovie = new UserMovieWatchList();
             userMovie.setUser(existingUser.get());
             userMovie.setMovie(existingMovie);
-            userMovie.setMovieState(MovieState.WATCHING);
+            if ( MovieState.isValid(requestMap.get(MOVIE_WATCH_STATE_KEY)) ) {
+                userMovie.setMovieState(MovieState.valueOf(requestMap.get(MOVIE_WATCH_STATE_KEY)));
+            } else {
+                userMovie.setMovieState(MovieState.WATCHING);
+            }
             watchListRepository.save(userMovie);
         } catch (DataIntegrityViolationException e) {
             throw new GenericBadRequest(e.getMessage());
@@ -107,7 +111,11 @@ public class WatchListController {
         }
 
         try {
-            userMovie.setMovieState(MovieState.valueOf(requestMap.get(MOVIE_WATCH_STATE_KEY)));
+            if ( MovieState.isValid(requestMap.get(MOVIE_WATCH_STATE_KEY)) ) {
+                userMovie.setMovieState(MovieState.valueOf(requestMap.get(MOVIE_WATCH_STATE_KEY)));
+            } else {
+                userMovie.setMovieState(MovieState.WATCHING);
+            }
             watchListRepository.save(userMovie);
         } catch (DataIntegrityViolationException e) {
             throw new GenericBadRequest(e.getMessage());

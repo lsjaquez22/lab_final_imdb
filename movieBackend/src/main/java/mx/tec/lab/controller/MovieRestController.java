@@ -123,11 +123,4 @@ public class MovieRestController {
 
         return new ArrayList<>();
     }
-
-    private String cutDownString(String str) {
-        if(str.length() > 255) {
-            return str.substring(0,250) + "...";
-        }
-        return str;
-    }
 }
