@@ -90,6 +90,7 @@ export default {
   .field {
     margin: 0 2em;
     .label {
+      font-size: 20px;
       color: $white;
       text-align: initial;
     }

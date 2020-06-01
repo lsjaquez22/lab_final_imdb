@@ -129,3 +129,30 @@ export const user_info = {
       "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
   },
 };
+
+export const user_movies = [
+  {
+    title: "Lilo & Stitch",
+    year: "2002",
+    imdbID: "tt0275847",
+    poster:
+      "https://m.media-amazon.com/images/M/MV5BMTkwOTU5MTA2M15BMl5BanBnXkFtZTYwMjYyNTc3._V1_SX300.jpg",
+    state: "WATCHING",
+  },
+  {
+    title: "Lilo & Stitch 2",
+    year: "2002",
+    imdbID: "tt02758472",
+    poster:
+      "https://m.media-amazon.com/images/M/MV5BMTkwOTU5MTA2M15BMl5BanBnXkFtZTYwMjYyNTc3._V1_SX300.jpg",
+    state: "WATCHING",
+  },
+  {
+    title: "Lilo & Stitch 3",
+    year: "2002",
+    imdbID: "tt02758473",
+    poster:
+      "https://m.media-amazon.com/images/M/MV5BMTkwOTU5MTA2M15BMl5BanBnXkFtZTYwMjYyNTc3._V1_SX300.jpg",
+    state: "WATCHING",
+  },
+];

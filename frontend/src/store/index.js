@@ -6,6 +6,7 @@ import {
   recomended_users,
   user_info,
   friends_users,
+  user_movies,
 } from "./data";
 
 Vue.use(Vuex);
@@ -14,6 +15,8 @@ export default new Vuex.Store({
   state: {
     user: { ...user_info },
     friends_user: [...friends_users],
+    movies_user: [...user_movies],
+    visit_user: {},
     search_movies: [],
     recommended_movies: [...recomended_movies],
     search_users: [...recomended_users],
