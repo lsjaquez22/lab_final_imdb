@@ -51,7 +51,7 @@
       </div>
       <div class="field is-grouped actions">
         <div class="control">
-          <button class="button is-primary is-link is-rounded">Create Account</button>
+          <button class="button is-primary is-link is-rounded" @click="signup()">Create Account</button>
         </div>
         <router-link class="navbar-item" to="/login">
           <p>Already have an account?</p>
@@ -64,14 +64,38 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
-  name: "Login",
+  name: "Signup",
   data: () => ({
     username: "",
     password: "",
     email: "",
-    name: ""
-  })
+    name: "",
+    errorMessage: "",
+    errorFlag: false
+  }),
+  methods: {
+    async signup() {
+      try {
+        const response = await axios.post("http://localhost:8080/api/users", {
+          name: this.name,
+          email: this.email,
+          username: this.username,
+          password: this.password
+        });
+        if (response.status === 200) {
+          this.$router.push({ name: "Login" });
+        }
+      } catch (err) {
+        console.log(err.response.data.message);
+        this.errorMessage = err.response.data.message;
+        this.errorFlag = true;
+        return err;
+      }
+    }
+  }
 };
 </script>
 
