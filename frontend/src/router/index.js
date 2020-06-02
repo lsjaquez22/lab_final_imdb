@@ -8,24 +8,28 @@ const routes = [
     path: "/",
     name: "Home",
     component: () => import(/* webpackChunkName: "Home" */ "../views/Home.vue"),
+    meta: { requiresAuth: true },
   },
   {
     path: "/profile",
     name: "Profile",
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Profile.vue"),
+    meta: { requiresAuth: true },
   },
   {
     path: "/movie/:movie_name",
     name: "Movie",
     component: () =>
       import(/* webpackChunkName: "movie" */ "../views/MovieDetail.vue"),
+    meta: { requiresAuth: true },
   },
   {
     path: "/user/:user_name",
     name: "User",
     component: () =>
       import(/* webpackChunkName: "user" */ "../views/UserDetail.vue"),
+    meta: { requiresAuth: true },
   },
   {
     path: "/search-movie",
@@ -43,13 +47,13 @@ const routes = [
     path: "/login",
     name: "Login",
     component: () =>
-      import(/* webpackChunkName: "login" */ "../views/Login.vue"),
+      import(/* webpackChunkName: "Login" */ "../views/Login.vue"),
   },
   {
     path: "/signup",
     name: "Signup",
     component: () =>
-      import(/* webpackChunkName: "signup" */ "../views/Signup.vue"),
+      import(/* webpackChunkName: "Signup" */ "../views/Signup.vue"),
   },
   {
     path: "*",
@@ -62,6 +66,20 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!sessionStorage.getItem("token")) {
+      next({
+        name: "Login",
+      });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;

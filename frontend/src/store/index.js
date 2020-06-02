@@ -9,11 +9,13 @@ import {
   user_movies,
 } from "./data";
 
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    user: { ...user_info },
+    user: {},
+    isLogged: false,
     friends_user: [...friends_users],
     movies_user: [...user_movies],
     search_movies: [],
@@ -22,14 +24,37 @@ export default new Vuex.Store({
     recommended_users: [...recomended_users],
   },
   mutations: {
-    search_movies(state, movies_list) {
-      state.search_movies = movies_list;
+    FETCH_USER(state, user) {
+      state.user = user;
+    },
+    TOGGLE_LOGGED(state) {
+      state.isLogged = true;
+    },
+    LOGOUT(state) {
+      state.isLogged = false;
+    },
+     search_movies(state, movies_list) {
+     state.search_movies = movies_list;
     },
   },
   actions: {
-    get_search_movies(context, movie_name) {
+    fetchUser({ commit }, data) {
+      commit("FETCH_USER", data);
+    },
+    toggleLogged({ commit }) {
+      commit("TOGGLE_LOGGED");
+    },
+    async logout({ commit }) {
+      const res = await axios.get("http://localhost:8080/api/logout", {
+        headers: { Token: this.state.user.token },
+      });
+      if (res.status === 200) {
+        sessionStorage.removeItem("token");
+      }
+      commit("LOGOUT");
+    },
+     get_search_movies(context, movie_name) {
       movie_name = movie_name.replace(" ", "_");
-
       axios({
         method: "get",
         url: `http://www.omdbapi.com/?s=${movie_name}&apikey=fac0fe09`,

@@ -33,9 +33,9 @@
         </div>
       </div>
 
-      <div class="field is-grouped">
+      <div class="field is-grouped actions">
         <div class="control">
-          <button class="button is-primary is-link is-rounded">Login</button>
+          <button class="button is-primary is-link is-rounded" @click="login()">Login</button>
         </div>
         <div>
           <router-link class="navbar-item" to="/signup">
@@ -50,12 +50,37 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "Login",
   data: () => ({
     username: "",
-    password: ""
-  })
+    password: "",
+    errorMessage: "",
+    errorFlag: false
+  }),
+  methods: {
+    async login() {
+      try {
+        const response = await axios.post("http://localhost:8080/api/login", {
+          username: this.username,
+          password: this.password
+        });
+        if (response.status === 200) {
+          sessionStorage.setItem("token", response.data.token);
+          this.$store.dispatch("fetchUser", response.data);
+          this.$store.dispatch("toggleLogged");
+          this.$router.push({ name: "Home" });
+        }
+      } catch (err) {
+        console.log(err.response.data.message);
+        this.errorMessage = err.response.data.message;
+        this.errorFlag = true;
+        return err;
+      }
+    }
+  }
 };
 </script>
 
@@ -64,6 +89,7 @@ export default {
 
 .bg {
   background-color: $purple;
+  min-height: 100vh;
 }
 .card {
   background-color: $white;
@@ -83,11 +109,9 @@ export default {
   -moz-box-shadow: 0px 0px 22px 0px rgba(0, 0, 0, 0.75);
   box-shadow: 0px 0px 22px 0px rgba(0, 0, 0, 0.75);
 }
-.center {
-  margin-top: 5%;
-}
+
 .title {
-  margin-top: 50px;
+  margin-top: 60px;
 }
 .text {
   color: $white;
@@ -97,5 +121,11 @@ export default {
 }
 .is-primary:hover {
   background-color: $purple;
+}
+.actions {
+  margin: 10% 20% 10% 20%;
+}
+.control {
+  margin: 8% 5% 0 5%;
 }
 </style>
