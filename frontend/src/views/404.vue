@@ -1,6 +1,6 @@
 <template>
   <div class="container-404">
-    <h1>Page Not Found</h1>
+    <h1 class="title">Page Not Found</h1>
     <router-link to="/">
       <button class="button is-primary">
         <strong>Home</strong>
@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: "Movie",
+  name: "404",
   data() {
     return {
       user_name: this.$route.params.user_name
@@ -23,13 +23,14 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "../styles/_variables.scss";
 
 .container-404 {
-  height: 100vh;
+  min-height: 100vh;
   background-color: $black;
-  p {
+  padding-top: 10em;
+  h1 {
     color: $white;
   }
   .is-primary {
@@ -37,6 +38,9 @@ export default {
     strong {
       color: $white;
     }
+  }
+  .is-primary:hover {
+    background-color: $purple;
   }
 }
 </style>

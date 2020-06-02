@@ -32,6 +32,18 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
+    path: "/search-movie",
+    name: "SearchMovie",
+    component: () =>
+      import(/* webpackChunkName: "searchMovie" */ "../views/MoviesList.vue"),
+  },
+  {
+    path: "/search-user",
+    name: "SearchUser",
+    component: () =>
+      import(/* webpackChunkName: "searchuSER" */ "../views/UserList.vue"),
+  },
+  {
     path: "/login",
     name: "Login",
     component: () =>

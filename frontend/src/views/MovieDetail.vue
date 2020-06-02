@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "Movie",
+  name: "MovieDetail",
   data() {
     return {
       movie_name: this.$route.params.movie_name
@@ -18,11 +18,11 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "../styles/_variables.scss";
 
 .container-movie {
-  height: 100vh;
+  min-height: 100vh;
   background-color: $black;
   p {
     color: $white;
