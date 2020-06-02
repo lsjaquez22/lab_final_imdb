@@ -4,11 +4,9 @@ import axios from "axios";
 import {
   recomended_movies,
   recomended_users,
-  user_info,
   friends_users,
   user_movies,
 } from "./data";
-
 
 Vue.use(Vuex);
 
@@ -33,8 +31,8 @@ export default new Vuex.Store({
     LOGOUT(state) {
       state.isLogged = false;
     },
-     search_movies(state, movies_list) {
-     state.search_movies = movies_list;
+    search_movies(state, movies_list) {
+      state.search_movies = movies_list;
     },
   },
   actions: {
@@ -53,7 +51,7 @@ export default new Vuex.Store({
       }
       commit("LOGOUT");
     },
-     get_search_movies(context, movie_name) {
+    get_search_movies(context, movie_name) {
       movie_name = movie_name.replace(" ", "_");
       axios({
         method: "get",
