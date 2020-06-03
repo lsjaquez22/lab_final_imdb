@@ -9,6 +9,8 @@ import mx.tec.lab.entity.User;
 import mx.tec.lab.exception.GenericBadRequest;
 import mx.tec.lab.exception.MovieSQLException;
 import mx.tec.lab.exception.UserNotFoundException;
+import mx.tec.lab.exception.UserUnauthorized;
+import mx.tec.lab.model.SimpleMovie;
 import mx.tec.lab.repository.MovieRepository;
 import mx.tec.lab.repository.UserRepository;
 import mx.tec.lab.service.SessionHandler;
@@ -96,6 +98,30 @@ public class MovieRestController {
         }
 
         return newMovie;
+    }
+
+    @GetMapping("/movie/recommended")
+    public Set<SimpleMovie> getRecommendedMovies(@RequestHeader("Token") String token,
+                                                 @RequestParam(value = "with_mine", required = false, defaultValue = "false") String withMine)
+    {
+        long userId = SessionHandler.getInstance().getUserByKey(token);
+        Optional<User> existingUser = userRepository.findById(userId);
+
+        if (!existingUser.isPresent()) {
+            throw new UserUnauthorized();
+        }
+
+        Set<SimpleMovie> movieRecommendations = new HashSet<>();
+
+        for(User friend : existingUser.get().getFollowingUsers()) {
+            System.out.println(friend.getUsername() + friend.getWatchListsAsList());
+            movieRecommendations.addAll(SimpleMovie.prepareMovieListToSimple(friend.getWatchLists()));
+        }
+
+        if (withMine.equals("false")) {
+            movieRecommendations.removeAll(SimpleMovie.prepareMovieListToSimple(existingUser.get().getWatchLists()));
+        }
+        return movieRecommendations;
     }
 
     private Movie getMovieFromOMDBByID(String imdbID) {

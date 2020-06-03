@@ -1,10 +1,11 @@
 package mx.tec.lab.controller;
 
-import mx.tec.lab.entity.Movie;
 import mx.tec.lab.entity.User;
 import mx.tec.lab.entity.UserMovieWatchList;
+import mx.tec.lab.exception.GenericBadRequest;
 import mx.tec.lab.exception.UserNotFoundException;
 import mx.tec.lab.exception.UserSQLException;
+import mx.tec.lab.exception.UserUnauthorized;
 import mx.tec.lab.model.SimpleMovie;
 import mx.tec.lab.repository.UserRepository;
 import mx.tec.lab.service.SessionHandler;
@@ -14,16 +15,17 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/*")
 public class UserRestController {
+
+    public static final String KEY_USERNAME = "username";
+    private static final String KEY_SHOULD_FOLLOW = "should_follow";
+
     @Resource
     private UserRepository userRepository;
 
@@ -38,7 +40,7 @@ public class UserRestController {
         Optional<User> existingUser = userRepository.findById(userId);
 
         if (!existingUser.isPresent()) {
-            throw new UserNotFoundException("Unauthorized feature...");
+            throw new UserUnauthorized();
         }
 
         User targetUser = userRepository.findByUsername(username);
@@ -47,6 +49,20 @@ public class UserRestController {
         }
         return new UserWrapper(targetUser, targetUser.getWatchListsAsList());
     }
+
+    @GetMapping("/users/friends")
+    public Set<User> getUserFollowers(@RequestHeader("Token") String token) {
+        long userId = SessionHandler.getInstance().getUserByKey(token);
+        Optional<User> existingUser = userRepository.findById(userId);
+
+        if (!existingUser.isPresent()) {
+            throw new UserUnauthorized();
+        }
+        return existingUser.get().getFollowingUsers();
+    }
+
+    // TODO: Suggested users: friends of friends
+    // TODO: Get users with similar name or username
 
     @PostMapping("/users")
     public User newUser(@Valid @RequestBody User newUser) {
@@ -70,7 +86,47 @@ public class UserRestController {
             updatedUser.setName(tempUser.getName());
             return userRepository.save(updatedUser);
         } else {
-            throw new UserNotFoundException("User not found with username " + tempUser.getUsername());
+            throw new UserUnauthorized();
+        }
+    }
+
+    @PutMapping("/users/friends")
+    public void addOrRemoveFollowList(@RequestHeader("Token") String token, @RequestBody Map<String, String> requestMap) {
+        long userId = SessionHandler.getInstance().getUserByKey(token);
+        Optional<User> existingUser = userRepository.findById(userId);
+
+        if (!existingUser.isPresent()) {
+            throw new UserUnauthorized();
+        }
+
+        if (!requestMap.containsKey(KEY_USERNAME) || !requestMap.containsKey(KEY_SHOULD_FOLLOW)) {
+            throw new GenericBadRequest();
+        }
+
+        try {
+            User friend = userRepository.findByUsername(requestMap.get(KEY_USERNAME));
+            if (friend == null) {
+                throw new UserNotFoundException();
+            }
+
+            User me = existingUser.get();
+
+            if (me.getFollowingUsers().contains(friend)) {
+                throw new GenericBadRequest("You are already following this account.");
+            }
+
+            if (me.equals(friend)) {
+                throw new GenericBadRequest("You cannot follow yourself.");
+            }
+
+            if ( Boolean.valueOf(requestMap.get(KEY_SHOULD_FOLLOW)) ) {
+                me.appendUserToFollowingList(friend);
+            } else {
+                me.removeFromFollowingList(friend);
+            }
+            userRepository.save(me);
+        } catch (IllegalArgumentException e) {
+            throw new GenericBadRequest(e.getMessage());
         }
     }
 
