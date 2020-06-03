@@ -1,13 +1,18 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
+    <div class="columns is-gapless">
+      <RecommendedMovie />
+      <RecommendedFriends />
+    </div>
   </div>
 </template>
 
 <script>
+import RecommendedMovie from "../components/recommended_movies.vue";
+import RecommendedFriends from "../components/recommended_friends.vue";
 export default {
   name: "Home",
-  components: {}
+  components: { RecommendedMovie, RecommendedFriends }
 };
 </script>
 
@@ -15,7 +20,16 @@ export default {
 @import "../styles/_variables.scss";
 
 .home {
-  height: 100vh;
+  min-height: 100vh;
   background-color: $black;
+  color: $white;
+  padding-top: 3em;
+  .subtitle {
+    color: $white;
+    font-weight: bold;
+  }
+  .recomended-friends {
+    margin: 0 1em;
+  }
 }
 </style>

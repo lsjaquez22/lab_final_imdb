@@ -1,7 +1,8 @@
 <template>
   <div>
     <!-- Revisar si esta registrado v-if="isLogged" -->
-    <div v-if="false" id="app" class="collapse" aria-expanded="true">
+    <div v-if="isLogged" id="app" class="collapse" aria-expanded="true">
+
       <nav
         class="navbar is-fixed-top is-transparent"
         role="navigation"
@@ -30,25 +31,22 @@
           <div class="navbar-start">
             <div class="search-bar">
               <p class="control has-icons-left has-icons-right">
-                <input class="input" type="text" placeholder="@Username / Movie" v-model="movie" />
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="@Username / Movie"
+                  v-model="to_search"
+                />
                 <span class="icon is-small is-left">
                   <i class="fas fa-search"></i>
                 </span>
               </p>
             </div>
-            <router-link
-              class="navbar-item"
-              :to="{name:'Movie', params: {movie_name: 'Harry Potter'}}"
-            >
-              <button class="button is-primary">
-                <strong>Search Movie</strong>
+            <div class="navbar-item">
+              <button class="button is-primary" v-on:click="search()" :disabled="valid_search">
+                <strong>Search</strong>
               </button>
-            </router-link>
-            <router-link class="navbar-item" :to="{name:'User', params: {user_name: 'lsjaquez'}}">
-              <button class="button is-primary">
-                <strong>Search User</strong>
-              </button>
-            </router-link>
+            </div>
           </div>
 
           <div class="navbar-end">
@@ -57,11 +55,11 @@
                 <strong>Profile</strong>
               </button>
             </router-link>
-            <router-link class="navbar-item" to="/">
+            <div class="navbar-item">
               <button v-on:click="onClick()" class="button is-primary">
                 <strong>Log Out</strong>
               </button>
-            </router-link>
+            </div>
           </div>
         </div>
       </nav>
@@ -72,7 +70,6 @@
         role="navigation"
         aria-label="main navigation"
       >
-        >
         <div class="navbar-brand">
           <a class="navbar-item" href="https://bulma.io">
             <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28" />
@@ -100,7 +97,7 @@
               </button>
             </router-link>
             <router-link class="navbar-item" to="/login">
-              <button v-on:click="onClick()" class="button is-primary">
+              <button class="button is-primary">
                 <strong>Login</strong>
               </button>
             </router-link>
@@ -117,21 +114,43 @@ export default {
   data() {
     return {
       showNav: false,
-      movie: null
+      to_search: ""
     };
   },
   computed: {
     isLogged() {
       return this.$store.state.isLogged;
+    },
+    valid_search() {
+      if (this.to_search[0] == "@" && this.to_search.length > 1) {
+        return false;
+      } else if (this.to_search[0] != "@" && this.to_search.length > 0) {
+        return false;
+      }
+      return true;
     }
   },
   methods: {
     showButtton(state) {
       return state;
     },
+
     onClick() {
-      //   this.$store.dispatch("logout");
-      //   this.$router.push({ name: "Login" });
+      this.$store.dispatch("logout");
+      this.$router.push({ name: "Login" });
+    },
+    search() {
+      if (this.to_search[0] != "@") {
+        this.$store.dispatch("get_search_movies", this.to_search);
+        if (this.$route.path != "/search-movie") {
+          this.$router.push({ name: "SearchMovie" });
+        }
+      } else {
+        if (this.$route.path != "/search-user") {
+          this.$router.push({ name: "SearchUser" });
+        }
+      }
+      this.to_search = "";
     }
   }
 };
