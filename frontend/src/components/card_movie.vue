@@ -16,17 +16,9 @@
               <p class="subtitle is-6">{{movie.Year}}</p>
             </div>
           </div>
-
-          <!-- <div class="content">
-            <a>@bulmaio</a>.
-            <a href="#">#css</a>
-            <a href="#">#responsive</a>
-            <br />
-            <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-          </div>-->
         </div>
         <footer class="card-footer">
-          <p href="#" class="card-footer-item subtitle">
+          <p class="card-footer-item subtitle" v-on:click="addMovie(movie.imdbID)">
             Add Movie
             <i class="fas fa-film"></i>
           </p>
@@ -37,10 +29,36 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "CardMovie",
   props: {
     movie: Object
+  },
+  methods: {
+    addMovie(imdbID) {
+      axios({
+        method: "get",
+        url: `http://localhost:8080/api/movie/${imdbID}`,
+        headers: {
+          Token: this.$store.state.user.token
+        }
+      }).then(() => {
+        axios({
+          method: "post",
+          url: `http://localhost:8080/api/watchlist`,
+          headers: {
+            Token: this.$store.state.user.token
+          },
+          data: {
+            imdbID: imdbID,
+            state: "PLAN_TO_WATCH"
+          }
+        }).then(() => {
+          this.$store.dispatch("get_user_movies");
+        });
+      });
+    }
   }
 };
 </script>
@@ -56,7 +74,7 @@ export default {
     }
   }
   .card-content {
-    height: 160px;
+    min-height: 160px;
   }
   .card-footer {
     background-color: $purple;

@@ -1,12 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
-import {
-  recomended_movies,
-  recomended_users,
-  friends_users,
-  user_movies,
-} from "./data";
+import { recomended_movies, recomended_users, friends_users } from "./data";
 
 Vue.use(Vuex);
 
@@ -15,7 +10,7 @@ export default new Vuex.Store({
     user: {},
     isLogged: false,
     friends_user: [...friends_users],
-    movies_user: [...user_movies],
+    movies_user: [],
     search_movies: [],
     recommended_movies: [...recomended_movies],
     search_users: [...recomended_users],
@@ -33,6 +28,9 @@ export default new Vuex.Store({
     },
     search_movies(state, movies_list) {
       state.search_movies = movies_list;
+    },
+    movies_user(state, movies_list) {
+      state.movies_user = movies_list;
     },
   },
   actions: {
@@ -55,9 +53,23 @@ export default new Vuex.Store({
       movie_name = movie_name.replace(" ", "_");
       axios({
         method: "get",
-        url: `http://www.omdbapi.com/?s=${movie_name}&apikey=fac0fe09`,
+        url: `http://localhost:8080/api/movie/search?title=${movie_name}`,
+        headers: {
+          Token: this.state.user.token,
+        },
       }).then((response) => {
-        context.commit("search_movies", response.data.Search);
+        context.commit("search_movies", response.data);
+      });
+    },
+    get_user_movies(context) {
+      axios({
+        method: "get",
+        url: `http://localhost:8080/api/watchlist`,
+        headers: {
+          Token: this.state.user.token,
+        },
+      }).then((response) => {
+        context.commit("movies_user", response.data);
       });
     },
   },

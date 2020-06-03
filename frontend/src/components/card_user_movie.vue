@@ -30,7 +30,7 @@
           </div>
         </div>
         <footer class="card-footer">
-          <p href="#" class="card-footer-item subtitle">
+          <p class="card-footer-item subtitle" v-on:click="addMovie(movie.imdbID)">
             Add Movie
             <i class="fas fa-film"></i>
           </p>
@@ -41,10 +41,36 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "CardUserMovie",
   props: {
     movie: Object
+  },
+  methods: {
+    addMovie(imdbID) {
+      axios({
+        method: "get",
+        url: `http://localhost:8080/api/movie/${imdbID}`,
+        headers: {
+          Token: this.$store.state.user.token
+        }
+      }).then(() => {
+        axios({
+          method: "post",
+          url: `http://localhost:8080/api/watchlist`,
+          headers: {
+            Token: this.$store.state.user.token
+          },
+          data: {
+            imdbID: imdbID,
+            state: "PLAN_TO_WATCH"
+          }
+        }).then(() => {
+          this.$store.dispatch("get_user_movies");
+        });
+      });
+    }
   }
 };
 </script>
