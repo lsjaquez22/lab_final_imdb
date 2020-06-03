@@ -91,31 +91,31 @@ export const recomended_users = [
     name: "Klaus Kientzle",
   },
   {
-    username: "SalvadorRomeroB",
+    username: "SalvaRB",
     name: "Salvador Romero",
   },
   {
-    username: "ChristopherADG",
+    username: "ChrisADG",
     name: "Christopher Delgado",
   },
 ];
 
 export const friends_users = [
   {
-    username: "HMH",
-    name: "Humberto Morales",
+    username: "Lsjaquez",
+    name: "Luis Antonio Sanchez",
   },
   {
-    username: "Charlie",
-    name: "Carlos de la Rosa",
+    username: "klauskie",
+    name: "Klaus Kientzle",
   },
   {
-    username: "ElDani",
-    name: "Daniel Chaparro",
+    username: "SalvaRB",
+    name: "Salvador Romero",
   },
   {
-    username: "LaRojas",
-    name: "Abril Rojas",
+    username: "ChrisADG",
+    name: "Christopher Delgado",
   },
 ];
 

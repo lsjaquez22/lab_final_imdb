@@ -4,16 +4,16 @@
       <div class="card">
         <div class="card-image">
           <figure class="image is-4by3">
-            <img :src="movie.Poster" alt="Placeholder image" />
+            <img :src="movie.poster" alt="Placeholder image" />
           </figure>
         </div>
         <div class="card-content">
           <div class="media">
             <div class="media-content">
-              <router-link :to="{name:'Movie', params: {movie_name: movie.Title}}">
-                <p class="title is-4">{{movie.Title}}</p>
+              <router-link :to="{name:'Movie', params: {movie_name: movie.title}}">
+                <p class="title is-4">{{movie.title}}</p>
               </router-link>
-              <p class="subtitle is-6">{{movie.Year}}</p>
+              <p class="subtitle is-6">{{movie.year}}</p>
             </div>
           </div>
 
