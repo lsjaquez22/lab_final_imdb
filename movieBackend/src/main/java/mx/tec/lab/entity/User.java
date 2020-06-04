@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -33,6 +34,12 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private Set<UserMovieWatchList> watchLists;
+
+    @JsonIgnore
+    @JoinTable(name = "friendship", joinColumns = {
+            @JoinColumn(name = "friend", referencedColumnName = "id", nullable = false)})
+    @ManyToMany
+    private List<User> friends;
 
 
     /* SETTERS AND GETTERS */
@@ -87,6 +94,42 @@ public class User {
     @JsonIgnore
     public List<UserMovieWatchList> getWatchListsAsList() {
         return new ArrayList<>(watchLists);
+    }
+
+    public void appendUserToFollowingList(User user) {
+        if (user != null) {
+            this.friends.add(user);
+        }
+    }
+
+    public void removeFromFollowingList(User user) {
+        if (user != null) {
+            this.friends.remove(user);
+        }
+    }
+
+    public List<User> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(List<User> friends) {
+        this.friends = friends;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(username, user.username);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, email, username);
     }
 }
 

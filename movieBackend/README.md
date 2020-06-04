@@ -22,6 +22,14 @@ Every request must contain the header key, <i>Token</i> and a valid token string
 
 > GET user by username: **api/user/{username}**
 
+> GET user friends: **api/user/friends**
+
+> GET friend recommendation: **api/users/friends/recommendation**
+
+> GET similar accounts: **api/users/query/{query_string}**
+
+> PUT update follow status: **api/users/friends**
+
 
 ### Movies
 
@@ -33,12 +41,16 @@ Every request must contain the header key, <i>Token</i> and a valid token string
 
 > GET : **api/movie/{imdbID}/score**
 
+> GET : **api//movie/recommended**
+
 > POST | PUT : **api/movie/score**
 
 
 ### Watchlist
 
 > GET | POST | PUT : **api/watchlist**
+
+> GET by username : **api//watchlist/{username}**
 
 > DELETE : **api/watchlist/{imdbID}**
 
@@ -160,6 +172,102 @@ ___
 
 ___
 
+### Get accounts that matched the query string or pattern.
+
+> GET: **/api/users/query/{query_string}**
+
+> NOTES: The owner of the search wont be included on the response.
+
+> Response: List of User object. Status: 200
+
+    [
+        {
+            "name": "Full name",
+            "email": "user@gmail.com",
+            "password": <hashed_password>,
+            "username": "username"
+        },
+        {
+            "name": "Full name",
+            "email": "user@gmail.com",
+            "password": <hashed_password>,
+            "username": "username"
+        }
+    ]
+    
+___
+
+
+### Users in follow list
+
+
+> GET: **api/user/friends**
+
+> Response: User list object. Status: 200
+
+    [
+        {
+            "name": "Full name",
+            "email": "user@gmail.com",
+            "password": <hashed_password>,
+            "username": "username"
+        },
+        {
+            "name": "Full name",
+            "email": "user@gmail.com",
+            "password": <hashed_password>,
+            "username": "username"
+        }
+    ]
+
+
+___
+
+
+### Follow or unfollow somebody
+
+> PUT: **api/users/friends**
+
+> Response: Status: 200
+
+> NOTES: 
+
+- should_follow = **"true"** adds friend
+
+- should_follow = **"false"** removes friend
+
+> Provide the following structure in body:
+
+    {
+        "username": "chrisdel",
+        "should_follow": "true"
+    }
+    
+___
+
+
+### Get friend of friends.
+
+> GET: **/api/users/friends/recommendation**
+
+> Response: List of User object. Status: 200
+
+    [
+        {
+            "name": "Full name",
+            "email": "user@gmail.com",
+            "password": <hashed_password>,
+            "username": "username"
+        },
+        {
+            "name": "Full name",
+            "email": "user@gmail.com",
+            "password": <hashed_password>,
+            "username": "username"
+        }
+    ]
+    
+___
 
 ### Get movie by imdbID
 
@@ -250,6 +358,50 @@ ___
     
 ___
 
+### Get Recommended Movies
+
+
+> GET: api/movie/recommended
+
+> Query Params: 
+- **with_mine**: optional; default value = false
+
+> Response: List of objects. Status: 200
+
+> Unsuccessful search returns an empty list
+
+> NOTES: Add query param with value of true keeps movies that are on your watchlist.
+
+> Example query: **api/movie/recommended?with_mine=true**
+
+
+    [
+        {
+            "Title": "The Office",
+            "Year": "2005–2013",
+            "imdbID": "tt0386676",
+            "Type": "series",
+            "Poster": "https://m.media-amazon.com/images/M/MV5BMDNkOTE4NDQtMTNmYi00MWE0LWE4ZTktYTc0NzhhNWIzNzJiXkEyXkFqcGdeQXVyMzQ2MDI5NjU@._V1_SX300.jpg"
+        },
+        {
+            "Title": "Mulan",
+            "Year": "2001–2003",
+            "imdbID": "tt0290978",
+            "Type": "series",
+            "Poster": "https://m.media-amazon.com/images/M/MV5BNGI4YWZhZDAtMjYwNC00YWJjLTgzODQtNmQ0OTI2NGQzMWUwXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg"
+        },
+        {
+            "Title": "Lilo and Stich",
+            "Year": "2019–",
+            "imdbID": "tt8305218",
+            "Type": "series",
+            "Poster": "https://m.media-amazon.com/images/M/MV5BZTFmNzMxYzktODVjZC00ZDNkLTgzYTYtMTBkNDg1OGMzYmE1XkEyXkFqcGdeQXVyMjUxMTY3ODM@._V1_SX300.jpg"
+        }
+    ]
+    
+___
+
+
 ### Get user score by movie
 
 
@@ -299,6 +451,8 @@ ___
 ### Get Watchlist
 
 > GET: **api/watchlist**
+
+> GET: **api/watchlist/{username}**
 
 > Response: Objects containing basic info + movie state
 
@@ -358,5 +512,79 @@ ___
 
 > NOTES: Deletes record from list
 
+
+___
+
+### Get comments of a movie
+
+> GET: api/movie/{imdbID}/comment
+
+> Response: Objects containing comments of a specific movie
+
+    [
+        {
+            "id": 10,
+            "user": {
+                "name": "Klaus K",
+                "email": "klaus@gmail.com",
+                "username": "klauskie",
+                "password": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4"
+            },
+            "comment": "Test comment",
+            "date": "2020-6-03"
+        },
+        {
+            "id": 11,
+            "user": {
+                "name": "Klaus K",
+                "email": "klaus@gmail.com",
+                "username": "klauskie",
+                "password": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4"
+            },
+            "comment": "Test comment 2 because yes",
+            "date": "2020-6-04"
+        }
+    ]
+
+___
+
+### Create a comment
+
+> POST: api/movie/{imdbID}/comment
+
+> Response: Comment object. HTTP status = 200
+
+> Request: 
+
+    {
+    	"date": "2020-06-04",
+    	"comment" : "Test comment 2 because yes"
+    }
+
+___
+
+### Update a comment
+
+> POST: api/movie/comment/{commentId}
+
+> Response: Comment object. HTTP status = 200
+
+> NOTES: Only content of the comment can be updated
+
+> Request: 
+
+    {
+    	"comment" : "Test comment updated"
+    }
+
+___
+
+### Update a comment
+
+> POST: api/movie/comment/{commentId}
+
+> Response: HTTP status = 200
+
+> NOTES: Deletes comment record
 
 ___

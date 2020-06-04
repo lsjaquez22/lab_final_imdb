@@ -53,6 +53,12 @@ public class SimpleMovie implements Serializable {
         return result;
     }
 
+    public static Set<SimpleMovie> prepareMovieListToSimple(Set<UserMovieWatchList> watchList) {
+        Set<SimpleMovie> result = new HashSet<>();
+        watchList.forEach(o -> result.add(new SimpleMovie(o.getMovie(), o.getMovieState())));
+        return result;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -91,5 +97,21 @@ public class SimpleMovie implements Serializable {
 
     public void setState(MovieState state) {
         this.state = state;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SimpleMovie that = (SimpleMovie) o;
+        return Objects.equals(title, that.title) &&
+                Objects.equals(year, that.year) &&
+                Objects.equals(imdbID, that.imdbID) &&
+                Objects.equals(poster, that.poster);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, year, imdbID, poster);
     }
 }
