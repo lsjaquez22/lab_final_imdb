@@ -45,7 +45,8 @@ public class SessionRestController {
         }
 
         TokenSerializable tokenSerializable = new TokenSerializable();
-        tokenSerializable.setToken(SessionHandler.getInstance().addNewSession(user));
+        //tokenSerializable.setToken(SessionHandler.getInstance().addNewSession(user));
+        tokenSerializable.setToken(SessionHandler.getInstance().setDefaultUser(user));
         tokenSerializable.setUser(user);
 
         return tokenSerializable;

@@ -4,17 +4,19 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
-@Table(name = "movie", uniqueConstraints={@UniqueConstraint(columnNames={"imdbID"})})
+@Table(name = "movie")
 public class Movie implements Serializable {
     @Id
     @GeneratedValue
     @JsonIgnore
     private long id;
 
-    @Column(name = "imdbID")
+    @Column(name = "imdbID", unique = true)
     private String imdbID;
 
     @JsonAlias("Title")
@@ -55,6 +57,9 @@ public class Movie implements Serializable {
 
     private float score;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "movie")
+    private Set<UserMovieWatchList> usersThatWatched;
 
     /* Getters and Setters */
 
@@ -79,7 +84,11 @@ public class Movie implements Serializable {
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        if(title.length() > 255) {
+            this.title = title.substring(0,250) + "...";
+        } else {
+            this.title = title;
+        }
     }
 
     public String getYear() {
@@ -119,7 +128,11 @@ public class Movie implements Serializable {
     }
 
     public void setWriter(String writer) {
-        this.writer = writer;
+        if(writer.length() > 250) {
+            this.writer = writer.substring(0,245) + "...";
+        } else {
+            this.writer = writer;
+        }
     }
 
     public String getActors() {
@@ -127,7 +140,11 @@ public class Movie implements Serializable {
     }
 
     public void setActors(String actors) {
-        this.actors = actors;
+        if(actors.length() > 255) {
+            this.actors = actors.substring(0,250) + "...";
+        } else {
+            this.actors = actors;
+        }
     }
 
     public String getPlot() {
@@ -135,7 +152,11 @@ public class Movie implements Serializable {
     }
 
     public void setPlot(String plot) {
-        this.plot = plot;
+        if(plot.length() > 255) {
+            this.plot = plot.substring(0,250) + "...";
+        } else {
+            this.plot = plot;
+        }
     }
 
     public String getLanguage() {
@@ -159,7 +180,11 @@ public class Movie implements Serializable {
     }
 
     public void setAwards(String awards) {
-        this.awards = awards;
+        if(awards.length() > 255) {
+            this.awards = awards.substring(0,250) + "...";
+        } else {
+            this.awards = awards;
+        }
     }
 
     public String getPoster() {
@@ -176,6 +201,14 @@ public class Movie implements Serializable {
 
     public void setScore(float score) {
         this.score = score;
+    }
+
+    public Set<UserMovieWatchList> getUsersThatWatched() {
+        return usersThatWatched;
+    }
+
+    public void setUsersThatWatched(Set<UserMovieWatchList> usersThatWatched) {
+        this.usersThatWatched = usersThatWatched;
     }
 
 }

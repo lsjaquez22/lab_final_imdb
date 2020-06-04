@@ -20,6 +20,8 @@ Every request must contain the header key, <i>Token</i> and a valid token string
 
 > GET user by id: **api/user**
 
+> GET user by username: **api/user/{username}**
+
 
 ### Movies
 
@@ -28,6 +30,17 @@ Every request must contain the header key, <i>Token</i> and a valid token string
 > GET : **api/movie/{imdbID}**
 
 > GET : **api/movie/search**
+
+> GET : **api/movie/{imdbID}/score**
+
+> POST | PUT : **api/movie/score**
+
+
+### Watchlist
+
+> GET | POST | PUT : **api/watchlist**
+
+> DELETE : **api/watchlist/{imdbID}**
 
 
 ### Sessions
@@ -54,7 +67,7 @@ HTTP 401: unauthorized. Missing token.
 > Provide the following structure in body:
 
     {
-        "email": "user@gmail.com",
+        "username": "useruwu",
         "password": "1234"
     }
 
@@ -76,7 +89,7 @@ ___
 
 ### New user 
 
-> POST: api/users
+> POST: **api/users**
 
 > Response: User object. Status: 200
 
@@ -96,7 +109,7 @@ ___
 ### Return current user
 
 
-> GET: api/user
+> GET: **api/user**
 
 > Response: User object. Status: 200
 
@@ -105,6 +118,43 @@ ___
         "email": "user@gmail.com",
         "password": <hashed_password>,
         "username": "username"
+    }
+
+
+___
+
+
+### Return User by username
+
+
+> GET: **api/user/{username}**
+
+> Response: Object with User, sorted watchlist, isFriend. Status: 200
+
+    {
+        "user": {
+            "name": "Name Lastname",
+            "email": "user@gmail.com",
+            "username": "username",
+            "password": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4"
+        },
+        "watchList": [
+            {
+                "title": "Mulan",
+                "year": "1998",
+                "imdbID": "tt0120762",
+                "poster": "https://m.media-amazon.com/images/M/MV5BODkxNGQ1NWYtNzg0Ny00Yjg3LThmZTItMjE2YjhmZTQ0ODY5XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
+                "state": "WATCHING"
+            },
+            {
+                "title": "Harry Potter and the Sorcerer's Stone",
+                "year": "2001",
+                "imdbID": "tt0241527",
+                "poster": "https://m.media-amazon.com/images/M/MV5BNjQ3NWNlNmQtMTE5ZS00MDdmLTlkZjUtZTBlM2UxMGFiMTU3XkEyXkFqcGdeQXVyNjUwNzk3NDc@._V1_SX300.jpg",
+                "state": "PLAN_TO_WATCH"
+            }
+        ],
+        "friend": false
     }
 
 
@@ -198,4 +248,115 @@ ___
         }
     ]
     
+___
+
+### Get user score by movie
+
+
+> GET: api/movie/{imdbID}/score
+
+> Response: float score . Status: 200
+
+> Score not found return 0.0 as score
+
+> Example query: **api/movie/tt0275847/score**
+
+    3.5
+    
+___
+
+### Set user score to movie
+
+
+> POST: api/movie/score
+
+> Provide the following structure in body:
+
+    {
+    	"imdbID" : "tt0275847",
+    	"score": "2.75"
+    }
+
+> Successful post request Status: 200
+___
+
+### Update user score to movie
+
+
+> PUT: api/movie/score
+
+> Provide the following structure in body:
+
+    {
+    	"imdbID" : "tt0275847",
+    	"score": "2.75"
+    }
+
+> Successful post request Status: 200
+___
+
+
+### Get Watchlist
+
+> GET: **api/watchlist**
+
+> Response: Objects containing basic info + movie state
+
+> NOTE: the return list is grouped by MovieState and sorted in alphabetical order (by section).
+
+> The possible states are: WATCHING, COMPLETED, PLAN_TO_WATCH, ON_HOLD
+
+    [
+        {
+            "title": "The Office",
+            "year": "2005–2013",
+            "imdbID": "tt0386676",
+            "poster": "https://m.media-amazon.com/images/M/MV5BMDNkOTE4NDQtMTNmYi00MWE0LWE4ZTktYTc0NzhhNWIzNzJiXkEyXkFqcGdeQXVyMzQ2MDI5NjU@._V1_SX300.jpg",
+            "state": "COMPLETED"
+        },
+        {
+            "title": "Your Name.",
+            "year": "2016",
+            "imdbID": "tt5311514",
+            "poster": "https://m.media-amazon.com/images/M/MV5BODRmZDVmNzUtZDA4ZC00NjhkLWI2M2UtN2M0ZDIzNDcxYThjL2ltYWdlXkEyXkFqcGdeQXVyNTk0MzMzODA@._V1_SX300.jpg",
+            "state": "COMPLETED"
+        },
+        {
+            "title": "Harry Potter and the Chamber of Secrets",
+            "year": "2002",
+            "imdbID": "tt0295297",
+            "poster": "https://m.media-amazon.com/images/M/MV5BMTcxODgwMDkxNV5BMl5BanBnXkFtZTYwMDk2MDg3._V1_SX300.jpg",
+            "state": "ON_HOLD"
+        }
+    ]
+
+___
+
+
+### POST | PUT Watchlist
+
+> POST | PUT: **api/watchlist**
+
+> Response: string. HTTP status = 200
+
+> NOTES: POST sets state to WATCHING by default.
+
+> Request: 
+
+    {
+        "imdbID": "tt0275847",
+        "state": "WATCHING"
+    }
+
+___
+
+### DELETE Watchlist
+
+> DELETE: **api/watchlist/{imdbID}**
+
+> Response: string. HTTP status = 200
+
+> NOTES: Deletes record from list
+
+
 ___

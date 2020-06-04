@@ -4,9 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "users", uniqueConstraints={@UniqueConstraint(columnNames={"email"}), @UniqueConstraint(columnNames={"username"})})
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue
@@ -16,20 +19,20 @@ public class User {
     @NotBlank(message = "Name is mandatory")
     private String name;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     @NotBlank(message = "Email is mandatory")
     private String email;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     @NotBlank(message = "Username is mandatory")
     private String username;
 
     @NotBlank(message = "Password is mandatory")
     private String password;
 
-
-
-
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private Set<UserMovieWatchList> watchLists;
 
 
     /* SETTERS AND GETTERS */
@@ -73,5 +76,17 @@ public class User {
         return username;
     }
 
+    public Set<UserMovieWatchList> getWatchLists() {
+        return watchLists;
+    }
+
+    public void setWatchLists(Set<UserMovieWatchList> watchLists) {
+        this.watchLists = watchLists;
+    }
+
+    @JsonIgnore
+    public List<UserMovieWatchList> getWatchListsAsList() {
+        return new ArrayList<>(watchLists);
+    }
 }
 
