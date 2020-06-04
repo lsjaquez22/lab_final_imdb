@@ -1,11 +1,11 @@
 <template>
-  <div class="column is-3 recomended-friends">
-    <p class="subtitle is-4">Friends</p>
+  <div class="column recomended-friends">
+    <p class="subtitle is-4">People You May Know</p>
     <CardRecommendedUser
-      v-for="user in list_friends"
+      v-for="user in list_users"
       :key="user.username"
       :user="user"
-      :profile="true"
+      :profile="false"
     />
   </div>
 </template>
@@ -13,17 +13,17 @@
 <script>
 import CardRecommendedUser from "./card_recommended_user";
 export default {
-  name: "ListFriends",
+  name: "RecommendedFriends",
   props: {},
   components: {
     CardRecommendedUser
   },
   mounted() {
-    this.$store.dispatch("get_friends_user");
+    this.$store.dispatch("get_recommended_users");
   },
   computed: {
-    list_friends() {
-      return this.$store.state.friends_user;
+    list_users() {
+      return this.$store.state.recommended_users;
     }
   }
 };

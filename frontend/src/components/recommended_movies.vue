@@ -2,7 +2,11 @@
   <div class="column recomended-movies">
     <p class="subtitle is-3">Recommended Movies For You</p>
     <div class="movies-container">
-      <CardMovie v-for="index in numberToShow" :key="index" :movie="list_movies[index-1]" />
+      <CardRecommendedMovie
+        v-for="index in numberToShow"
+        :key="index"
+        :movie="list_movies[index-1]"
+      />
     </div>
     <div v-if="!showAll" class="show-more">
       <button class="button is-primary" v-on:click="show_more()">
@@ -13,17 +17,20 @@
 </template>
 
 <script>
-import CardMovie from "./card_movie.vue";
+import CardRecommendedMovie from "./card_recommended_movie";
 export default {
   name: "RecommendedMovie",
   components: {
-    CardMovie
+    CardRecommendedMovie
   },
   data() {
     return {
-      numberToShow: 3,
-      showAll: false
+      showAll: false,
+      numberToShow: 3
     };
+  },
+  mounted() {
+    this.$store.dispatch("get_recommended_movies");
   },
   computed: {
     list_movies() {

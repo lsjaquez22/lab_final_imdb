@@ -11,8 +11,13 @@
               <p class="title is-3">{{user_info.name}}</p>
             </div>
             <div class="column" v-if="!my_friends">
-              <button class="button is-primary">
+              <button class="button is-primary" v-on:click="follow_user()">
                 <strong>Add Friend</strong>
+              </button>
+            </div>
+            <div class="column" v-else>
+              <button class="button is-danger" v-on:click="unfollow_user()">
+                <strong>Delete Friend</strong>
               </button>
             </div>
           </div>
@@ -28,6 +33,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import CardUserMovie from "../components/card_user_movie";
 import RecommendedFriends from "../components/recommended_friends.vue";
 export default {
@@ -40,71 +46,60 @@ export default {
     return {
       user_name: this.$route.params.user_name,
       my_friends: false,
-      user_info: {
-        username: "HMH",
-        name: "Humberto Morales"
-      },
-      user_movies: [
-        {
-          Title: "The Wolf of Wall Street",
-          Year: "2013",
-          imdbID: "tt0993846",
-          Type: "movie",
-          Poster:
-            "https://m.media-amazon.com/images/M/MV5BMjIxMjgxNTk0MF5BMl5BanBnXkFtZTgwNjIyOTg2MDE@._V1_SX300.jpg",
-          state: "WATCHING"
-        },
-        {
-          Title: "21 Jump Street",
-          Year: "2012",
-          imdbID: "tt1232829",
-          Type: "movie",
-          Poster:
-            "https://m.media-amazon.com/images/M/MV5BNTZjNzRjMTMtZDMzNy00Y2ZjLTg0OTAtZjVhNzYyZmJjOTljXkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_SX300.jpg",
-          state: "WATCHING"
-        },
-        {
-          Title: "22 Jump Street",
-          Year: "2014",
-          imdbID: "tt2294449",
-          Type: "movie",
-          Poster:
-            "https://m.media-amazon.com/images/M/MV5BMTcwNzAxMDU1M15BMl5BanBnXkFtZTgwNDE2NTU1MTE@._V1_SX300.jpg",
-          state: "WATCHING"
-        },
-        {
-          Title: "The Hangover",
-          Year: "2009",
-          imdbID: "tt1119646",
-          Type: "movie",
-          Poster:
-            "https://m.media-amazon.com/images/M/MV5BNGQwZjg5YmYtY2VkNC00NzliLTljYTctNzI5NmU3MjE2ODQzXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg",
-          state: "WATCHING"
-        },
-        {
-          Title: "The Hangover Part II",
-          Year: "2011",
-          imdbID: "tt1411697",
-          Type: "movie",
-          Poster:
-            "https://m.media-amazon.com/images/M/MV5BMTM2MTM4MzY2OV5BMl5BanBnXkFtZTcwNjQ3NzI4NA@@._V1_SX300.jpg",
-          state: "WATCHING"
-        },
-        {
-          Title: "The Hangover Part III",
-          Year: "2013",
-          imdbID: "tt1951261",
-          Type: "movie",
-          Poster:
-            "https://m.media-amazon.com/images/M/MV5BMTA0NjE1MzMzODheQTJeQWpwZ15BbWU3MDY4MTQ3Mzk@._V1_SX300.jpg",
-          state: "WATCHING"
-        }
-      ]
+      user_info: {},
+      user_movies: []
     };
   },
   mounted() {
-    console.log("get info User (info and movies)");
-    console.log("get info if user is my friend");
+    axios({
+      method: "get",
+      url: `http://localhost:8080/api/users/${this.user_name}`,
+      headers: {
+        Token: this.$store.state.user.token
+      }
+    }).then(response => {
+      this.user_info = response.data.user;
+      this.user_movies = response.data.watchList;
+      this.my_friends = response.data.friend;
+    });
+  },
+  methods: {
+    follow_user() {
+      axios({
+        method: "put",
+        url: `http://localhost:8080/api/users/friends`,
+        headers: {
+          Token: this.$store.state.user.token
+        },
+        data: {
+          username: this.user_info.username,
+          should_follow: "true"
+        }
+      }).then(() => {
+        this.my_friends = true;
+        this.$store.dispatch("get_recommended_users");
+        this.$store.dispatch("get_friends_user");
+        this.$store.dispatch("get_recommended_movies");
+      });
+    },
+    unfollow_user() {
+      axios({
+        method: "put",
+        url: `http://localhost:8080/api/users/friends`,
+        headers: {
+          Token: this.$store.state.user.token
+        },
+        data: {
+          username: this.user_info.username,
+          should_follow: "false"
+        }
+      }).then(() => {
+        this.my_friends = false;
+        this.$store.dispatch("get_recommended_users");
+        this.$store.dispatch("get_friends_user");
+        this.$store.dispatch("get_recommended_movies");
+      });
+    }
   }
 };
 </script>
@@ -133,6 +128,12 @@ export default {
     }
     .is-primary {
       background-color: $purple;
+      strong {
+        color: $white;
+      }
+    }
+    .is-danger {
+      background-color: $red;
       strong {
         color: $white;
       }
