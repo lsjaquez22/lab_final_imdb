@@ -277,20 +277,23 @@ ___
 > Response: Movie object. Status: 200
 
     {
-        "imdbID": "tt0386676",
-        "title": "The Office",
-        "year": "2005–2013",
-        "released": "24 Mar 2005",
-        "genre": "Comedy",
-        "director": "N/A",
-        "writer": "Greg Daniels, Ricky Gervais, Stephen Merchant",
-        "actors": "Rainn Wilson, John Krasinski, Jenna Fischer, Leslie David Baker",
-        "plot": "A mockumentary on a group of typical office workers, where the workday consists of ego clashes, inappropriate behavior, and tedium.",
-        "language": "English",
-        "country": "USA",
-        "awards": "Won 1 Golden Globe. Another 47 wins & 186 nominations.",
-        "poster": "https://m.media-amazon.com/images/M/MV5BMDNkOTE4NDQtMTNmYi00MWE0LWE4ZTktYTc0NzhhNWIzNzJiXkEyXkFqcGdeQXVyMzQ2MDI5NjU@._V1_SX300.jpg",
-        "score": 0.0
+        "movie": {
+            "imdbID": "tt0275847",
+            "title": "Lilo & Stitch",
+            "year": "2002",
+            "released": "21 Jun 2002",
+            "genre": "Animation, Adventure, Comedy, Drama, Family, Fantasy, Sci-Fi",
+            "director": "Dean DeBlois, Chris Sanders",
+            "writer": "Chris Sanders (based on an idea by), Chris Sanders, Dean DeBlois",
+            "actors": "Daveigh Chase, Chris Sanders, Tia Carrere, David Ogden Stiers",
+            "plot": "A Hawaiian girl adopts an unusual pet who is actually a notorious extra-terrestrial fugitive.",
+            "language": "English, Hawaiian",
+            "country": "USA",
+            "awards": "Nominated for 1 Oscar. Another 10 wins & 26 nominations.",
+            "poster": "https://m.media-amazon.com/images/M/MV5BMTkwOTU5MTA2M15BMl5BanBnXkFtZTYwMjYyNTc3._V1_SX300.jpg",
+            "score": 0.0
+        },
+        "inWatchList": true
     }
 
 
