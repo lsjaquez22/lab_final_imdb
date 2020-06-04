@@ -13,6 +13,9 @@ export default {
   components: {
     CardUser
   },
+  mounted() {
+    this.$store.dispatch("get_recommended_users");
+  },
   computed: {
     list_users() {
       return this.$store.state.recommended_users;

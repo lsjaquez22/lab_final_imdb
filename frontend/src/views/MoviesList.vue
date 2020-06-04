@@ -4,8 +4,11 @@
       <div class="column is-1"></div>
       <div class="column">
         <h1 class="title">List of Movies</h1>
-        <div class="movies-container">
+        <div v-if="search_found" class="movies-container">
           <CardMovie v-for="element in list_movies" :key="element.imdbID" :movie="element" />
+        </div>
+        <div v-else class="movies-container">
+          <p class="title not-found">User Not Found</p>
         </div>
       </div>
       <div class="column is-1"></div>
@@ -26,6 +29,9 @@ export default {
   computed: {
     list_movies() {
       return this.$store.state.search_movies;
+    },
+    search_found() {
+      return this.$store.state.search_found;
     }
   }
 };
@@ -47,6 +53,9 @@ export default {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    .not-found {
+      color: $white;
+    }
   }
 }
 </style>
