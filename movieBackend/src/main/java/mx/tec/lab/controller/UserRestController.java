@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.io.Serializable;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.*;
 
 
@@ -51,17 +52,38 @@ public class UserRestController {
     }
 
     @GetMapping("/users/friends")
-    public Set<User> getUserFollowers(@RequestHeader("Token") String token) {
+    public List<User> getUserFollowers(@RequestHeader("Token") String token) {
         long userId = SessionHandler.getInstance().getUserByKey(token);
         Optional<User> existingUser = userRepository.findById(userId);
 
         if (!existingUser.isPresent()) {
             throw new UserUnauthorized();
         }
-        return existingUser.get().getFollowingUsers();
+        return existingUser.get().getFriends();
     }
 
-    // TODO: Suggested users: friends of friends
+    @GetMapping("/users/friends/recommendation")
+    public Set<User> getSuggestedFriends(@RequestHeader("Token") String token) {
+        long userId = SessionHandler.getInstance().getUserByKey(token);
+        Optional<User> existingUser = userRepository.findById(userId);
+
+        if (!existingUser.isPresent()) {
+            throw new UserUnauthorized();
+        }
+
+        Set<User> suggestedAccounts = new HashSet<>();
+
+        for(User friend : existingUser.get().getFriends()) {
+            suggestedAccounts.addAll(friend.getFriends());
+        }
+
+        suggestedAccounts.removeAll(existingUser.get().getFriends());
+        suggestedAccounts.remove(existingUser.get());
+
+        return suggestedAccounts;
+    }
+
+
     // TODO: Get users with similar name or username
 
     @PostMapping("/users")
@@ -111,15 +133,14 @@ public class UserRestController {
 
             User me = existingUser.get();
 
-            if (me.getFollowingUsers().contains(friend)) {
-                throw new GenericBadRequest("You are already following this account.");
-            }
-
             if (me.equals(friend)) {
                 throw new GenericBadRequest("You cannot follow yourself.");
             }
 
             if ( Boolean.valueOf(requestMap.get(KEY_SHOULD_FOLLOW)) ) {
+                if (me.getFriends().contains(friend)) {
+                    throw new GenericBadRequest("You are already following this account.");
+                }
                 me.appendUserToFollowingList(friend);
             } else {
                 me.removeFromFollowingList(friend);

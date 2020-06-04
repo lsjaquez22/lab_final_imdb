@@ -113,8 +113,7 @@ public class MovieRestController {
 
         Set<SimpleMovie> movieRecommendations = new HashSet<>();
 
-        for(User friend : existingUser.get().getFollowingUsers()) {
-            System.out.println(friend.getUsername() + friend.getWatchListsAsList());
+        for(User friend : existingUser.get().getFriends()) {
             movieRecommendations.addAll(SimpleMovie.prepareMovieListToSimple(friend.getWatchLists()));
         }
 

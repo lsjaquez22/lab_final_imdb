@@ -24,6 +24,8 @@ Every request must contain the header key, <i>Token</i> and a valid token string
 
 > GET user friends: **api/user/friends**
 
+> GET friend recommendation: **api/users/friends/recommendation**
+
 > PUT update follow status: **api/users/friends**
 
 
@@ -176,18 +178,20 @@ ___
 
 > Response: User list object. Status: 200
 
-    {
-        "name": "Full name",
-        "email": "user@gmail.com",
-        "password": <hashed_password>,
-        "username": "username"
-    },
-    {
-        "name": "Full name",
-        "email": "user@gmail.com",
-        "password": <hashed_password>,
-        "username": "username"
-    }
+    [
+        {
+            "name": "Full name",
+            "email": "user@gmail.com",
+            "password": <hashed_password>,
+            "username": "username"
+        },
+        {
+            "name": "Full name",
+            "email": "user@gmail.com",
+            "password": <hashed_password>,
+            "username": "username"
+        }
+    ]
 
 
 ___
@@ -214,6 +218,29 @@ ___
     
 ___
 
+
+### Get friend of friends.
+
+> GET: **/api/users/friends/recommendation**
+
+> Response: List of User object. Status: 200
+
+    [
+        {
+            "name": "Full name",
+            "email": "user@gmail.com",
+            "password": <hashed_password>,
+            "username": "username"
+        },
+        {
+            "name": "Full name",
+            "email": "user@gmail.com",
+            "password": <hashed_password>,
+            "username": "username"
+        }
+    ]
+    
+___
 
 ### Get movie by imdbID
 
@@ -316,7 +343,7 @@ ___
 
 > Unsuccessful search returns an empty list
 
-> NOTES: Add query param with value of true if you don't wish to remove your watchlist from the result set.
+> NOTES: Add query param with value of true keeps movies that are on your watchlist.
 
 > Example query: **api/movie/recommended?with_mine=true**
 

@@ -36,8 +36,10 @@ public class User {
     private Set<UserMovieWatchList> watchLists;
 
     @JsonIgnore
-    @OneToMany
-    private Set<User> followingUsers;
+    @JoinTable(name = "friendship", joinColumns = {
+            @JoinColumn(name = "friend", referencedColumnName = "id", nullable = false)})
+    @ManyToMany
+    private List<User> friends;
 
 
     /* SETTERS AND GETTERS */
@@ -94,24 +96,24 @@ public class User {
         return new ArrayList<>(watchLists);
     }
 
-    public Set<User> getFollowingUsers() {
-        return followingUsers;
-    }
-
-    public void setFollowingUsers(Set<User> followingUsers) {
-        this.followingUsers = followingUsers;
-    }
-
     public void appendUserToFollowingList(User user) {
         if (user != null) {
-            this.followingUsers.add(user);
+            this.friends.add(user);
         }
     }
 
     public void removeFromFollowingList(User user) {
         if (user != null) {
-            this.followingUsers.remove(user);
+            this.friends.remove(user);
         }
+    }
+
+    public List<User> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(List<User> friends) {
+        this.friends = friends;
     }
 
     @Override
