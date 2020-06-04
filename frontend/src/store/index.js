@@ -16,6 +16,7 @@ export default new Vuex.Store({
     recommended_movies: [],
     search_users: [],
     recommended_users: [],
+    tempMovie: {},
   },
   mutations: {
     FETCH_USER(state, user) {
@@ -49,6 +50,12 @@ export default new Vuex.Store({
     },
     not_found(state) {
       state.search_found = false;
+    },
+    FETCH_TEMP_MOVIE(state, data) {
+      state.tempMovie = data;
+    },
+    UPDATE_MOVIE_SCORE(state, data) {
+      state.tempMovie.score = data;
     },
   },
   actions: {
@@ -143,6 +150,12 @@ export default new Vuex.Store({
       }).then((response) => {
         context.commit("recommended_movies", response.data);
       });
+    },
+    fetchTempMovie({ commit }, data) {
+      commit("FETCH_TEMP_MOVIE", data);
+    },
+    updateMovieScore({ commit }, data) {
+      commit("UPDATE_MOVIE_SCORE", data);
     },
   },
   modules: {},

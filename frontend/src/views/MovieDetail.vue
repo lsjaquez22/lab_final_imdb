@@ -52,8 +52,69 @@
       <div class="column is-6">
         <div class="card">
           <footer class="card-footer">
-            <p class="card-footer-item">Score: {{movie.score}}</p>
+            <p class="card-footer-item">
+              Score: {{movie.score}}
+              <progress
+                class="progress is-primary is-small"
+                :value="movie.score"
+                max="5"
+              ></progress>
+            </p>
             <p class="card-footer-item">Year: {{movie.year}}</p>
+            <div class="card-footer-item">
+              <div class="dropdown is-hoverable">
+                <div class="dropdown-trigger">
+                  <p>Rate:</p>
+                  <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
+                    <span>
+                      {{userScore}}
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                    </span>
+                    <span class="icon is-small">
+                      <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+                  <div class="dropdown-content">
+                    <a @click="handleRating(1.0)" class="dropdown-item">
+                      (1)
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                    </a>
+                    <hr class="dropdown-divider" />
+                    <a @click="handleRating(2.0)" class="dropdown-item">
+                      (2)
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                    </a>
+                    <hr class="dropdown-divider" />
+                    <a @click="handleRating(3.0)" class="dropdown-item">
+                      (3)
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                    </a>
+                    <hr class="dropdown-divider" />
+                    <a @click="handleRating(4.0)" class="dropdown-item">
+                      (4)
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                    </a>
+                    <hr class="dropdown-divider" />
+                    <a @click="handleRating(5.0)" class="dropdown-item">
+                      (5)
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </footer>
         </div>
         <div class="card">
@@ -95,20 +156,81 @@ export default {
   data() {
     return {
       movie_id: this.$route.params.movie_id,
-      movie: {}
+      score: 0,
+      userScore: 0
     };
   },
   async mounted() {
-    const res = await axios.get(
-      `http://localhost:8080/api/movie/${this.movie_id}`,
-      { headers: { Token: this.$store.state.user.token } }
-    );
-    this.movie = res.data;
-    console.log(this.movie);
-    return res.data;
+    this.fetchMovie();
+    this.getUsrScore();
+  },
+  computed: {
+    movie() {
+      return this.$store.state.tempMovie;
+    }
   },
   components: {
     RecommendedFriends
+  },
+  methods: {
+    async fetchMovie() {
+      const res = await axios.get(
+        `http://localhost:8080/api/movie/${this.movie_id}`,
+        { headers: { Token: this.$store.state.user.token } }
+      );
+      this.$store.dispatch("fetchTempMovie", res.data.movie);
+    },
+    async rateMovie(score) {
+      const data = {
+        imdbID: this.movie_id,
+        score: score
+      };
+      const res = await axios.post(
+        "http://localhost:8080/api/movie/score",
+        data,
+        { headers: { Token: this.$store.state.user.token } }
+      );
+
+      if (res.status === 200) {
+        console.log(res);
+        this.userScore = score;
+        this.fetchMovie();
+      }
+    },
+    async changeRating(score) {
+      const data = {
+        imdbID: this.movie_id,
+        score: score
+      };
+      const res = await axios.put(
+        "http://localhost:8080/api/movie/score",
+        data,
+        { headers: { Token: this.$store.state.user.token } }
+      );
+
+      if (res.status === 200) {
+        console.log(res);
+        this.userScore = score;
+        this.fetchMovie();
+      }
+    },
+    handleRating(score) {
+      if (this.userScore === 0.0) {
+        this.changeRating(score);
+        // this.rateMovie(score);
+      } else {
+        this.changeRating(score);
+      }
+    },
+    async getUsrScore() {
+      const res = await axios.get(
+        `http://localhost:8080/api/movie/·${this.movie_id}/score`,
+        { headers: { Token: this.$store.state.user.token } }
+      );
+
+      console.log(res.data);
+      this.userScore = res.data;
+    }
   }
 };
 </script>
