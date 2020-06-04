@@ -83,7 +83,7 @@ public class UserRestController {
     }
 
     @GetMapping("/users/query/{query_string}")
-    public List<User> querySimilarUsersByUsername(@RequestHeader("Token") String token, @PathVariable(value = "query_string") String queryString) {
+    public List<UserWrapper> querySimilarUsersByUsername(@RequestHeader("Token") String token, @PathVariable(value = "query_string") String queryString) {
         long userId = SessionHandler.getInstance().getUserByKey(token);
         Optional<User> existingUser = userRepository.findById(userId);
 
@@ -98,7 +98,12 @@ public class UserRestController {
         List<User> queryResult = userRepository.getSimilarUsers(queryString);
         queryResult.remove(existingUser.get());
 
-        return queryResult;
+        List<UserWrapper> resultWrapper = new ArrayList<>();
+        for (User queryDude : queryResult) {
+            resultWrapper.add(new UserWrapper(existingUser.get(), queryDude));
+        }
+
+        return resultWrapper;
     }
 
     @PostMapping("/users")
@@ -191,6 +196,11 @@ public class UserRestController {
         public  UserWrapper(User subscriber, User somebody, List<UserMovieWatchList> watchList) {
             this.user = somebody;
             this.watchList = SimpleMovie.sortMovieList(watchList);
+            this.isFriend = subscriber.getFriends().contains(somebody);
+        }
+
+        public  UserWrapper(User subscriber, User somebody) {
+            this.user = somebody;
             this.isFriend = subscriber.getFriends().contains(somebody);
         }
 

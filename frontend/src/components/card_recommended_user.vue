@@ -2,13 +2,13 @@
   <article class="message">
     <div class="message-body">
       <div class="user-info">
-        <router-link :to="{name:'User', params: {user_name: user.user.username}}">
-          <strong>@{{user.user.username}}</strong>
-          <p>{{user.user.name}}</p>
+        <router-link :to="{name:'User', params: {user_name: user.username}}">
+          <strong>@{{user.username}}</strong>
+          <p>{{user.name}}</p>
         </router-link>
       </div>
 
-      <div v-if="!user.friend" class="icon-add-friend">
+      <div v-if="!profile" class="icon-add-friend">
         <i class="fas fa-user-plus" v-on:click="follow_user()"></i>
       </div>
       <div v-else class="icon-remove-friend">
@@ -21,7 +21,7 @@
 <script>
 import axios from "axios";
 export default {
-  name: "CardUser",
+  name: "CardRecommendedUser",
   props: {
     user: Object,
     profile: Boolean,
@@ -36,7 +36,7 @@ export default {
           Token: this.$store.state.user.token
         },
         data: {
-          username: this.user.user.username,
+          username: this.user.username,
           should_follow: "true"
         }
       }).then(() => {
@@ -53,7 +53,7 @@ export default {
           Token: this.$store.state.user.token
         },
         data: {
-          username: this.user.user.username,
+          username: this.user.username,
           should_follow: "false"
         }
       }).then(() => {

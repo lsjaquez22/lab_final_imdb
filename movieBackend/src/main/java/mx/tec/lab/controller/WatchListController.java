@@ -5,6 +5,7 @@ import mx.tec.lab.entity.MovieState;
 import mx.tec.lab.entity.User;
 import mx.tec.lab.entity.UserMovieWatchList;
 import mx.tec.lab.exception.GenericBadRequest;
+import mx.tec.lab.exception.MovieSQLException;
 import mx.tec.lab.exception.UserNotFoundException;
 import mx.tec.lab.exception.UserUnauthorized;
 import mx.tec.lab.model.SimpleMovie;
@@ -12,8 +13,11 @@ import mx.tec.lab.repository.MovieRepository;
 import mx.tec.lab.repository.UserMovieWatchListRepository;
 import mx.tec.lab.repository.UserRepository;
 import mx.tec.lab.service.SessionHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -26,6 +30,9 @@ public class WatchListController {
     private static final String IMDB_ID_KEY = "imdbID";
     private static final String MOVIE_WATCH_STATE_KEY = "state";
 
+    private static final String API_KEY = "fac0fe09";
+    public static final String OMDB_URL_API_KEY = "http://www.omdbapi.com/?apikey=" + API_KEY;
+
     @Resource
     private UserMovieWatchListRepository watchListRepository;
 
@@ -34,6 +41,13 @@ public class WatchListController {
 
     @Resource
     private UserRepository userRepository;
+
+    private RestTemplate restTemplate;
+
+    @Autowired
+    public WatchListController(RestTemplateBuilder builder) {
+        this.restTemplate = builder.build();
+    }
 
     @GetMapping("/watchlist")
     public List<SimpleMovie> getWatchedMovies(@RequestHeader("Token") String token) {
@@ -79,7 +93,12 @@ public class WatchListController {
 
         Movie existingMovie = movieRepository.findByImdbID(requestMap.get(IMDB_ID_KEY));
         if (existingMovie == null) {
-            throw new GenericBadRequest("Movie not saved on local db...");
+            Movie newMovie = getMovieFromOMDBByID(requestMap.get(IMDB_ID_KEY));
+            try {
+                existingMovie = movieRepository.save(newMovie);
+            } catch (DataIntegrityViolationException e) {
+                throw new MovieSQLException("Couldn't save movie into local db.");
+            }
         }
 
         UserMovieWatchList existingMovieInList = watchListRepository.findByUserIdAndMovieId(userId, existingMovie.getId());
@@ -163,4 +182,8 @@ public class WatchListController {
         }
     }
 
+    private Movie getMovieFromOMDBByID(String imdbID) {
+        String url = OMDB_URL_API_KEY + "&i=" + imdbID;
+        return this.restTemplate.getForObject(url, Movie.class);
+    }
 }
