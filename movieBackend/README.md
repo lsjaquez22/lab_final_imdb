@@ -182,16 +182,24 @@ ___
 
     [
         {
-            "name": "Full name",
-            "email": "user@gmail.com",
-            "password": <hashed_password>,
-            "username": "username"
+            "user": {
+                "name": "Jack R",
+                "email": "someone@gmail.com",
+                "username": "username1",
+                "password": "password_hashed"
+            },
+            "watchList": null,
+            "friend": true
         },
         {
-            "name": "Full name",
-            "email": "user@gmail.com",
-            "password": <hashed_password>,
-            "username": "username"
+            "user": {
+                "name": "Jill R",
+                "email": "dude@gmail.com",
+                "username": "username2",
+                "password": "password_hashed"
+            },
+            "watchList": null,
+            "friend": false
         }
     ]
     
