@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import mx.tec.lab.entity.Movie;
 import mx.tec.lab.entity.User;
+import mx.tec.lab.entity.UserMovieWatchList;
 import mx.tec.lab.exception.GenericBadRequest;
 import mx.tec.lab.exception.MovieSQLException;
 import mx.tec.lab.exception.UserNotFoundException;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
+import java.io.Serializable;
 import java.util.*;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -74,7 +76,7 @@ public class MovieRestController {
     }
 
     @GetMapping("/movie/{imdbID}")
-    public Movie getMoviesByImdbID(@RequestHeader("Token") String token, @PathVariable(value = "imdbID") String imdbID) {
+    public MovieWrapper getMoviesByImdbID(@RequestHeader("Token") String token, @PathVariable(value = "imdbID") String imdbID) {
         long userId = SessionHandler.getInstance().getUserByKey(token);
         Optional<User> existingUser = userRepository.findById(userId);
 
@@ -85,7 +87,7 @@ public class MovieRestController {
         Movie existingMovie = movieRepository.findByImdbID(imdbID);
 
         if (existingMovie != null) {
-            return existingMovie;
+            return new MovieWrapper(existingMovie, existingUser.get());
         }
 
         Movie newMovie = getMovieFromOMDBByID(imdbID);
@@ -97,7 +99,7 @@ public class MovieRestController {
             throw new MovieSQLException("Couldn't save movie into local db.");
         }
 
-        return newMovie;
+        return new MovieWrapper(newMovie);
     }
 
     @GetMapping("/movie/recommended")
@@ -147,5 +149,41 @@ public class MovieRestController {
         }
 
         return new ArrayList<>();
+    }
+
+    public class MovieWrapper implements Serializable {
+
+        private Movie movie;
+        private boolean isInWatchList = false;
+
+        public  MovieWrapper(Movie movie) {
+            this.movie = movie;
+        }
+
+        public  MovieWrapper(Movie movie, User user) {
+            this.movie = movie;
+            for (UserMovieWatchList movieInWatchList: user.getWatchListsAsList()) {
+                if (movieInWatchList.getMovie().getImdbID().equals(movie.getImdbID())){
+                    this.isInWatchList = true;
+                    break;
+                }
+            }
+        }
+
+        public Movie getMovie() {
+            return movie;
+        }
+
+        public void setMovie(Movie movie) {
+            this.movie = movie;
+        }
+
+        public boolean isInWatchList() {
+            return isInWatchList;
+        }
+
+        public void setInWatchList(boolean inWatchList) {
+            isInWatchList = inWatchList;
+        }
     }
 }
