@@ -6,6 +6,7 @@ import mx.tec.lab.entity.User;
 import mx.tec.lab.entity.UserMovieWatchList;
 import mx.tec.lab.exception.GenericBadRequest;
 import mx.tec.lab.exception.UserNotFoundException;
+import mx.tec.lab.exception.UserUnauthorized;
 import mx.tec.lab.model.SimpleMovie;
 import mx.tec.lab.repository.MovieRepository;
 import mx.tec.lab.repository.UserMovieWatchListRepository;
@@ -44,6 +45,23 @@ public class WatchListController {
         }
 
         return SimpleMovie.sortMovieList(watchListRepository.findAllByUserId(userId));
+    }
+
+    @GetMapping("/watchlist/{username}")
+    public List<SimpleMovie> getFriendsWatchlist(@RequestHeader("Token") String token, @PathVariable(value = "username") String username) {
+        long userId = SessionHandler.getInstance().getUserByKey(token);
+        Optional<User> existingUser = userRepository.findById(userId);
+
+        if (!existingUser.isPresent()) {
+            throw new UserUnauthorized();
+        }
+
+        User anyOne = userRepository.findByUsername(username);
+        if (anyOne == null) {
+            throw new UserNotFoundException();
+        }
+
+        return SimpleMovie.sortMovieList(watchListRepository.findAllByUserId(anyOne.getId()));
     }
 
     @PostMapping("/watchlist")
