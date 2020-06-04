@@ -10,7 +10,7 @@
         <div class="card-content">
           <div class="media">
             <div class="media-content">
-              <router-link :to="{name:'Movie', params: {movie_name: movie.Title}}">
+              <router-link :to="{name:'Movie', params: {movie_id : movie.imdbID}}">
                 <p class="title is-4">{{movie.Title}}</p>
               </router-link>
               <p class="subtitle is-6">{{movie.Year}}</p>

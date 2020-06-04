@@ -18,7 +18,7 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: "/movie/:movie_name",
+    path: "/movie/:movie_id",
     name: "Movie",
     component: () =>
       import(/* webpackChunkName: "movie" */ "../views/MovieDetail.vue"),
