@@ -11,8 +11,13 @@
               <p class="title is-3">{{user_info.name}}</p>
             </div>
             <div class="column" v-if="!my_friends">
-              <button class="button is-primary">
+              <button class="button is-primary" v-on:click="follow_user()">
                 <strong>Add Friend</strong>
+              </button>
+            </div>
+            <div class="column" v-else>
+              <button class="button is-danger" v-on:click="unfollow_user()">
+                <strong>Delete Friend</strong>
               </button>
             </div>
           </div>
@@ -57,6 +62,44 @@ export default {
       this.user_movies = response.data.watchList;
       this.my_friends = response.data.friend;
     });
+  },
+  methods: {
+    follow_user() {
+      axios({
+        method: "put",
+        url: `http://localhost:8080/api/users/friends`,
+        headers: {
+          Token: this.$store.state.user.token
+        },
+        data: {
+          username: this.user_info.username,
+          should_follow: "true"
+        }
+      }).then(() => {
+        this.my_friends = true;
+        this.$store.dispatch("get_recommended_users");
+        this.$store.dispatch("get_friends_user");
+        this.$store.dispatch("get_recommended_movies");
+      });
+    },
+    unfollow_user() {
+      axios({
+        method: "put",
+        url: `http://localhost:8080/api/users/friends`,
+        headers: {
+          Token: this.$store.state.user.token
+        },
+        data: {
+          username: this.user_info.username,
+          should_follow: "false"
+        }
+      }).then(() => {
+        this.my_friends = false;
+        this.$store.dispatch("get_recommended_users");
+        this.$store.dispatch("get_friends_user");
+        this.$store.dispatch("get_recommended_movies");
+      });
+    }
   }
 };
 </script>
@@ -85,6 +128,12 @@ export default {
     }
     .is-primary {
       background-color: $purple;
+      strong {
+        color: $white;
+      }
+    }
+    .is-danger {
+      background-color: $red;
       strong {
         color: $white;
       }

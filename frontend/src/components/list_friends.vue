@@ -1,17 +1,22 @@
 <template>
   <div class="column is-3 recomended-friends">
     <p class="subtitle is-4">Friends</p>
-    <CardUser v-for="user in list_friends" :key="user.username" :user="user" :profile="true" />
+    <CardRecommendedUser
+      v-for="user in list_friends"
+      :key="user.username"
+      :user="user"
+      :profile="true"
+    />
   </div>
 </template>
 
 <script>
-import CardUser from "./card_user";
+import CardRecommendedUser from "./card_recommended_user";
 export default {
   name: "ListFriends",
   props: {},
   components: {
-    CardUser
+    CardRecommendedUser
   },
   mounted() {
     this.$store.dispatch("get_friends_user");
