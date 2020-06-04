@@ -2,7 +2,6 @@
   <div>
     <!-- Revisar si esta registrado v-if="isLogged" -->
     <div v-if="isLogged" id="app" class="collapse" aria-expanded="true">
-
       <nav
         class="navbar is-fixed-top is-transparent"
         role="navigation"
@@ -146,6 +145,7 @@ export default {
           this.$router.push({ name: "SearchMovie" });
         }
       } else {
+        this.$store.dispatch("get_search_users", this.to_search);
         if (this.$route.path != "/search-user") {
           this.$router.push({ name: "SearchUser" });
         }

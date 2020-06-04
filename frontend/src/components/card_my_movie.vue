@@ -30,11 +30,11 @@
           </div>
         </div>
         <footer class="card-footer">
-          <p class="card-footer-item subtitle edit-state">
+          <p class="card-footer-item subtitle edit-state" v-on:click="saveStateMovie(movie.imdbID)">
             Save State
             <i class="fas fa-film"></i>
           </p>
-          <p class="card-footer-item subtitle delete-movie">
+          <p class="card-footer-item subtitle delete-movie" v-on:click="deleteMovie(movie.imdbID)">
             Delete Movie
             <i class="fas fa-times"></i>
           </p>
@@ -45,10 +45,39 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "CardMyMovie",
   props: {
     movie: Object
+  },
+  methods: {
+    saveStateMovie(imdbID) {
+      axios({
+        method: "put",
+        url: `http://localhost:8080/api/watchlist`,
+        headers: {
+          Token: this.$store.state.user.token
+        },
+        data: {
+          imdbID: imdbID,
+          state: this.movie.state
+        }
+      }).then(() => {
+        this.$store.dispatch("get_user_movies");
+      });
+    },
+    deleteMovie(imdbID) {
+      axios({
+        method: "delete",
+        url: `http://localhost:8080/api/watchlist/${imdbID}`,
+        headers: {
+          Token: this.$store.state.user.token
+        }
+      }).then(() => {
+        this.$store.dispatch("get_user_movies");
+      });
+    }
   }
 };
 </script>
@@ -65,7 +94,7 @@ export default {
       }
     }
     .card-content {
-      height: 200px;
+      min-height: 200px;
     }
     .card-footer {
       .edit-state {

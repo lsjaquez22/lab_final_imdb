@@ -11,21 +11,9 @@
           <div class="media">
             <div class="media-content">
               <router-link :to="{name:'Movie', params: {movie_id : movie.imdbID}}">
-                <p class="title is-4">{{movie.Title}}</p>
+                <p class="title is-4">{{movie.title}}</p>
               </router-link>
               <p class="subtitle is-6">{{movie.year}}</p>
-            </div>
-          </div>
-
-          <div class="content">
-            <label class="label">State</label>
-            <div class="select">
-              <select v-model="movie.state" :disabled="true">
-                <option value="WATCHING">WATCHING</option>
-                <option value="COMPLETED">COMPLETED</option>
-                <option value="PLAN_TO_WATCH">PLAN_TO_WATCH</option>
-                <option value="ON_HOLD">ON_HOLD</option>
-              </select>
             </div>
           </div>
         </div>
@@ -43,7 +31,7 @@
 <script>
 import axios from "axios";
 export default {
-  name: "CardUserMovie",
+  name: "CardRecommendedMovie",
   props: {
     movie: Object
   },
@@ -86,7 +74,7 @@ export default {
     }
   }
   .card-content {
-    min-height: 200px;
+    min-height: 160px;
   }
   .card-footer {
     background-color: $purple;

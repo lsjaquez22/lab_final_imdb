@@ -1,12 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
-import {
-  recomended_movies,
-  recomended_users,
-  friends_users,
-  user_movies,
-} from "./data";
+import {} from "./data";
 
 Vue.use(Vuex);
 
@@ -14,12 +9,13 @@ export default new Vuex.Store({
   state: {
     user: {},
     isLogged: false,
-    friends_user: [...friends_users],
-    movies_user: [...user_movies],
+    search_found: false,
+    friends_user: [],
+    movies_user: [],
     search_movies: [],
-    recommended_movies: [...recomended_movies],
-    search_users: [...recomended_users],
-    recommended_users: [...recomended_users],
+    recommended_movies: [],
+    search_users: [],
+    recommended_users: [],
   },
   mutations: {
     FETCH_USER(state, user) {
@@ -32,7 +28,27 @@ export default new Vuex.Store({
       state.isLogged = false;
     },
     search_movies(state, movies_list) {
+      state.search_found = true;
       state.search_movies = movies_list;
+    },
+    search_users(state, users_list) {
+      state.search_found = true;
+      state.search_users = users_list;
+    },
+    movies_user(state, movies_list) {
+      state.movies_user = movies_list;
+    },
+    friends_user(state, list_friends_users) {
+      state.friends_user = list_friends_users;
+    },
+    recommended_users(state, list_recommended_users) {
+      state.recommended_users = list_recommended_users;
+    },
+    recommended_movies(state, list_recommended_movies) {
+      state.recommended_movies = list_recommended_movies;
+    },
+    not_found(state) {
+      state.search_found = false;
     },
   },
   actions: {
@@ -55,9 +71,77 @@ export default new Vuex.Store({
       movie_name = movie_name.replace(" ", "_");
       axios({
         method: "get",
-        url: `http://www.omdbapi.com/?s=${movie_name}&apikey=fac0fe09`,
+        url: `http://localhost:8080/api/movie/search?title=${movie_name}`,
+        headers: {
+          Token: this.state.user.token,
+        },
       }).then((response) => {
-        context.commit("search_movies", response.data.Search);
+        if (response.data.length > 0) {
+          context.commit("search_movies", response.data);
+        } else {
+          context.commit("not_found");
+        }
+      });
+    },
+    get_search_users(context, user_name) {
+      user_name = user_name.replace(" ", "");
+      user_name = user_name.replace("@", "");
+      axios({
+        method: "get",
+        url: `http://localhost:8080/api/users/query/${user_name}`,
+        headers: {
+          Token: this.state.user.token,
+        },
+      }).then((response) => {
+        if (response.data.length > 0) {
+          context.commit("search_users", response.data);
+        } else {
+          context.commit("not_found");
+        }
+      });
+    },
+    get_user_movies(context) {
+      axios({
+        method: "get",
+        url: `http://localhost:8080/api/watchlist`,
+        headers: {
+          Token: this.state.user.token,
+        },
+      }).then((response) => {
+        context.commit("movies_user", response.data);
+      });
+    },
+    get_friends_user(context) {
+      axios({
+        method: "get",
+        url: `http://localhost:8080/api/users/friends`,
+        headers: {
+          Token: this.state.user.token,
+        },
+      }).then((response) => {
+        context.commit("friends_user", response.data);
+      });
+    },
+    get_recommended_users(context) {
+      axios({
+        method: "get",
+        url: `http://localhost:8080/api/users/friends/recommendation`,
+        headers: {
+          Token: this.state.user.token,
+        },
+      }).then((response) => {
+        context.commit("recommended_users", response.data);
+      });
+    },
+    get_recommended_movies(context) {
+      axios({
+        method: "get",
+        url: `http://localhost:8080/api/movie/recommended`,
+        headers: {
+          Token: this.state.user.token,
+        },
+      }).then((response) => {
+        context.commit("recommended_movies", response.data);
       });
     },
   },

@@ -9,18 +9,59 @@
       </div>
 
       <div v-if="!profile" class="icon-add-friend">
-        <i class="fas fa-user-plus"></i>
+        <i class="fas fa-user-plus" v-on:click="follow_user()"></i>
+      </div>
+      <div v-else class="icon-remove-friend">
+        <i class="fas fa-times" v-on:click="unfollow_user()"></i>
       </div>
     </div>
   </article>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "CardUser",
   props: {
     user: Object,
-    profile: Boolean
+    profile: Boolean,
+    search: Boolean
+  },
+  methods: {
+    follow_user() {
+      axios({
+        method: "put",
+        url: `http://localhost:8080/api/users/friends`,
+        headers: {
+          Token: this.$store.state.user.token
+        },
+        data: {
+          username: this.user.username,
+          should_follow: "true"
+        }
+      }).then(() => {
+        this.$store.dispatch("get_recommended_users");
+        this.$store.dispatch("get_friends_user");
+        this.$store.dispatch("get_recommended_movies");
+      });
+    },
+    unfollow_user() {
+      axios({
+        method: "put",
+        url: `http://localhost:8080/api/users/friends`,
+        headers: {
+          Token: this.$store.state.user.token
+        },
+        data: {
+          username: this.user.username,
+          should_follow: "false"
+        }
+      }).then(() => {
+        this.$store.dispatch("get_recommended_users");
+        this.$store.dispatch("get_friends_user");
+        this.$store.dispatch("get_recommended_movies");
+      });
+    }
   }
 };
 </script>

@@ -25,14 +25,14 @@ public class SessionRestController {
     private UserRepository userRepository;
 
     @PostMapping("/login")
-    public TokenSerializable login(@RequestBody Map<String, String> userResponse) {
+    public TokenSerializable login(@RequestBody Map<String, String> userRequest) {
 
         User user = null;
         String hashedPassword = null;
 
-        if (userResponse.containsKey(KEY_USERNAME) && userResponse.containsKey(KEY_PASSWORD)) {
-            user = userRepository.findByUsername(userResponse.get(KEY_USERNAME));
-            hashedPassword = SessionHandler.getInstance().hashedString(userResponse.get(KEY_PASSWORD));
+        if (userRequest.containsKey(KEY_USERNAME) && userRequest.containsKey(KEY_PASSWORD)) {
+            user = userRepository.findByUsername(userRequest.get(KEY_USERNAME));
+            hashedPassword = SessionHandler.getInstance().hashedString(userRequest.get(KEY_PASSWORD));
         } else {
             throw new GenericBadRequest();
         }

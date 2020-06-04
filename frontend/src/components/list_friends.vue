@@ -13,6 +13,9 @@ export default {
   components: {
     CardUser
   },
+  mounted() {
+    this.$store.dispatch("get_friends_user");
+  },
   computed: {
     list_friends() {
       return this.$store.state.friends_user;

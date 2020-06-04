@@ -4,8 +4,11 @@
       <div class="column"></div>
       <div class="column is-4">
         <h1 class="title">List of Users</h1>
-        <div class="user-container">
+        <div v-if="search_found" class="user-container">
           <CardUser v-for="element in list_users" :key="element.username" :user="element" />
+        </div>
+        <div v-else class="user-container">
+          <p class="title not-found">User Not Found</p>
         </div>
       </div>
       <div class="column"></div>
@@ -26,6 +29,9 @@ export default {
   computed: {
     list_users() {
       return this.$store.state.search_users;
+    },
+    search_found() {
+      return this.$store.state.search_found;
     }
   }
 };
@@ -47,6 +53,11 @@ export default {
     // display: flex;
     // flex-wrap: wrap;
     // justify-content: center;
+  }
+  .user-container {
+    .not-found {
+      color: $white;
+    }
   }
 }
 </style>

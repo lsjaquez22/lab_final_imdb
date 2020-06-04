@@ -22,6 +22,9 @@ import CardMyMovie from "../components/card_my_movie.vue";
 export default {
   name: "Profile",
   components: { ListFriends, InfoUser, CardMyMovie },
+  mounted() {
+    this.$store.dispatch("get_user_movies");
+  },
   computed: {
     list_movies() {
       return this.$store.state.movies_user;
