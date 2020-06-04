@@ -514,3 +514,77 @@ ___
 
 
 ___
+
+### Get comments of a movie
+
+> GET: api/movie/{imdbID}/comment
+
+> Response: Objects containing comments of a specific movie
+
+    [
+        {
+            "id": 10,
+            "user": {
+                "name": "Klaus K",
+                "email": "klaus@gmail.com",
+                "username": "klauskie",
+                "password": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4"
+            },
+            "comment": "Test comment",
+            "date": "2020-6-03"
+        },
+        {
+            "id": 11,
+            "user": {
+                "name": "Klaus K",
+                "email": "klaus@gmail.com",
+                "username": "klauskie",
+                "password": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4"
+            },
+            "comment": "Test comment 2 because yes",
+            "date": "2020-6-04"
+        }
+    ]
+
+___
+
+### Create a comment
+
+> POST: api/movie/{imdbID}/comment
+
+> Response: Comment object. HTTP status = 200
+
+> Request: 
+
+    {
+    	"date": "2020-06-04",
+    	"comment" : "Test comment 2 because yes"
+    }
+
+___
+
+### Update a comment
+
+> POST: api/movie/comment/{commentId}
+
+> Response: Comment object. HTTP status = 200
+
+> NOTES: Only content of the comment can be updated
+
+> Request: 
+
+    {
+    	"comment" : "Test comment updated"
+    }
+
+___
+
+### Update a comment
+
+> POST: api/movie/comment/{commentId}
+
+> Response: HTTP status = 200
+
+> NOTES: Deletes comment record
+
+___
