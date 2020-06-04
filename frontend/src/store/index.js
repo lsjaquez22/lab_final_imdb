@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
-import { recomended_movies } from "./data";
+import {} from "./data";
 
 Vue.use(Vuex);
 
@@ -13,7 +13,7 @@ export default new Vuex.Store({
     friends_user: [],
     movies_user: [],
     search_movies: [],
-    recommended_movies: [...recomended_movies],
+    recommended_movies: [],
     search_users: [],
     recommended_users: [],
   },
@@ -43,6 +43,9 @@ export default new Vuex.Store({
     },
     recommended_users(state, list_recommended_users) {
       state.recommended_users = list_recommended_users;
+    },
+    recommended_movies(state, list_recommended_movies) {
+      state.recommended_movies = list_recommended_movies;
     },
     not_found(state) {
       state.search_found = false;
@@ -128,6 +131,17 @@ export default new Vuex.Store({
         },
       }).then((response) => {
         context.commit("recommended_users", response.data);
+      });
+    },
+    get_recommended_movies(context) {
+      axios({
+        method: "get",
+        url: `http://localhost:8080/api/movie/recommended`,
+        headers: {
+          Token: this.state.user.token,
+        },
+      }).then((response) => {
+        context.commit("recommended_movies", response.data);
       });
     },
   },

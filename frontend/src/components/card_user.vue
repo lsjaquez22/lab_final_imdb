@@ -42,6 +42,7 @@ export default {
       }).then(() => {
         this.$store.dispatch("get_recommended_users");
         this.$store.dispatch("get_friends_user");
+        this.$store.dispatch("get_recommended_movies");
       });
     },
     unfollow_user() {
@@ -58,6 +59,7 @@ export default {
       }).then(() => {
         this.$store.dispatch("get_recommended_users");
         this.$store.dispatch("get_friends_user");
+        this.$store.dispatch("get_recommended_movies");
       });
     }
   }
