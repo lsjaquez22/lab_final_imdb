@@ -26,6 +26,8 @@ Every request must contain the header key, <i>Token</i> and a valid token string
 
 > GET friend recommendation: **api/users/friends/recommendation**
 
+> GET similar accounts: **api/users/query/{query_string}**
+
 > PUT update follow status: **api/users/friends**
 
 
@@ -168,6 +170,31 @@ ___
     }
 
 
+___
+
+### Get accounts that matched the query string or pattern.
+
+> GET: **/api/users/query/{query_string}**
+
+> NOTES: The owner of the search wont be included on the response.
+
+> Response: List of User object. Status: 200
+
+    [
+        {
+            "name": "Full name",
+            "email": "user@gmail.com",
+            "password": <hashed_password>,
+            "username": "username"
+        },
+        {
+            "name": "Full name",
+            "email": "user@gmail.com",
+            "password": <hashed_password>,
+            "username": "username"
+        }
+    ]
+    
 ___
 
 

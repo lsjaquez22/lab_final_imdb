@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.io.Serializable;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.*;
 
 
@@ -48,7 +47,7 @@ public class UserRestController {
         if (targetUser == null) {
             throw new UserNotFoundException();
         }
-        return new UserWrapper(targetUser, targetUser.getWatchListsAsList());
+        return new UserWrapper(existingUser.get(), targetUser, targetUser.getWatchListsAsList());
     }
 
     @GetMapping("/users/friends")
@@ -83,8 +82,24 @@ public class UserRestController {
         return suggestedAccounts;
     }
 
+    @GetMapping("/users/query/{query_string}")
+    public List<User> querySimilarUsersByUsername(@RequestHeader("Token") String token, @PathVariable(value = "query_string") String queryString) {
+        long userId = SessionHandler.getInstance().getUserByKey(token);
+        Optional<User> existingUser = userRepository.findById(userId);
 
-    // TODO: Get users with similar name or username
+        if (!existingUser.isPresent()) {
+            throw new UserUnauthorized();
+        }
+
+        if (queryString.isEmpty()) {
+            throw new GenericBadRequest("Query string is empty... Provide a root string in order to look up similar accounts.");
+        }
+
+        List<User> queryResult = userRepository.getSimilarUsers(queryString);
+        queryResult.remove(existingUser.get());
+
+        return queryResult;
+    }
 
     @PostMapping("/users")
     public User newUser(@Valid @RequestBody User newUser) {
@@ -171,6 +186,12 @@ public class UserRestController {
         public  UserWrapper(User user, List<UserMovieWatchList> watchList) {
             this.user = user;
             this.watchList = SimpleMovie.sortMovieList(watchList);
+        }
+
+        public  UserWrapper(User subscriber, User somebody, List<UserMovieWatchList> watchList) {
+            this.user = somebody;
+            this.watchList = SimpleMovie.sortMovieList(watchList);
+            this.isFriend = subscriber.getFriends().contains(somebody);
         }
 
         public User getUser() {
