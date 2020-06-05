@@ -56,6 +56,7 @@ export default {
           }
         }).then(() => {
           this.$store.dispatch("get_user_movies");
+          this.$store.dispatch("get_recommended_movies");
         });
       });
     }
