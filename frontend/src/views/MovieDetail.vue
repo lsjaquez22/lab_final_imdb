@@ -408,9 +408,6 @@ export default {
   }
   .delete-movie {
     background-color: $red;
-    .fa-times {
-      color: $white;
-    }
   }
 
   .actors-card {

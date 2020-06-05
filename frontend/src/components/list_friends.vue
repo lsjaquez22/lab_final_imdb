@@ -1,6 +1,6 @@
 <template>
   <div class="column is-3 recomended-friends">
-    <p class="subtitle is-4">Friends</p>
+    <p class="subtitle is-4">Following</p>
     <CardRecommendedUser
       v-for="user in list_friends"
       :key="user.username"

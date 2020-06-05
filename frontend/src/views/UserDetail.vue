@@ -12,12 +12,12 @@
             </div>
             <div class="column" v-if="!my_friends">
               <button class="button is-primary" v-on:click="follow_user()">
-                <strong>Add Friend</strong>
+                <strong>Follow User</strong>
               </button>
             </div>
             <div class="column" v-else>
               <button class="button is-danger" v-on:click="unfollow_user()">
-                <strong>Delete Friend</strong>
+                <strong>Unfollow User</strong>
               </button>
             </div>
           </div>
