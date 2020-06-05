@@ -11,7 +11,7 @@
           </div>
           <div class="card-content">
             <footer class="card-footer">
-              <button class="card-footer-item subtitle">
+              <button @click="addMovie()" class="card-footer-item subtitle">
                 Add Movie
                 <i class="fas fa-film"></i>
               </button>
@@ -327,6 +327,29 @@ export default {
       this.currentCommentId = id;
       this.editFlag = true;
       this.comment = comment;
+    },
+    addMovie() {
+      axios({
+        method: "get",
+        url: `http://localhost:8080/api/movie/${this.movie_id}`,
+        headers: {
+          Token: this.$store.state.user.token
+        }
+      }).then(() => {
+        axios({
+          method: "post",
+          url: `http://localhost:8080/api/watchlist`,
+          headers: {
+            Token: this.$store.state.user.token
+          },
+          data: {
+            imdbID: this.movie_id,
+            state: "PLAN_TO_WATCH"
+          }
+        }).then(() => {
+          this.$store.dispatch("get_user_movies");
+        });
+      });
     }
   }
 };
