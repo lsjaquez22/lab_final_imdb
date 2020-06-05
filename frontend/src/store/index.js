@@ -16,6 +16,8 @@ export default new Vuex.Store({
     recommended_movies: [],
     search_users: [],
     recommended_users: [],
+    tempMovie: {},
+    movieComments: [],
   },
   mutations: {
     FETCH_USER(state, user) {
@@ -50,6 +52,18 @@ export default new Vuex.Store({
     not_found(state) {
       state.search_found = false;
     },
+    FETCH_TEMP_MOVIE(state, data) {
+      state.tempMovie = data;
+    },
+    UPDATE_MOVIE_SCORE(state, data) {
+      state.tempMovie.score = data;
+    },
+    FETCH_MOVIE_COMMENTS(state, data) {
+      state.movieComments = data;
+    },
+    // MAKE_COMMENT(state, data){
+    //   state.movieComments = [...state.movieComments, data]
+    // }
   },
   actions: {
     fetchUser({ commit }, data) {
@@ -143,6 +157,20 @@ export default new Vuex.Store({
       }).then((response) => {
         context.commit("recommended_movies", response.data);
       });
+    },
+    fetchTempMovie({ commit }, data) {
+      commit("FETCH_TEMP_MOVIE", data);
+    },
+    updateMovieScore({ commit }, data) {
+      commit("UPDATE_MOVIE_SCORE", data);
+    },
+    async fetchMovieComment({ commit }, movie_id) {
+      const res = await axios.get(
+        `http://localhost:8080/api/movie/${movie_id}/comment`,
+        { headers: { Token: this.state.user.token } }
+      );
+
+      commit("FETCH_MOVIE_COMMENTS", res.data);
     },
   },
   modules: {},
