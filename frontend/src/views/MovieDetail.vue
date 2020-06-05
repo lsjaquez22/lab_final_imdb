@@ -11,7 +11,7 @@
           </div>
           <div class="card-content">
             <footer class="card-footer">
-              <button class="card-footer-item subtitle">
+              <button @click="addMovie()" class="card-footer-item subtitle">
                 Add Movie
                 <i class="fas fa-film"></i>
               </button>
@@ -52,8 +52,69 @@
       <div class="column is-6">
         <div class="card">
           <footer class="card-footer">
-            <p class="card-footer-item">Score: {{movie.score}}</p>
+            <p class="card-footer-item">
+              Score: {{movie.score}}
+              <progress
+                class="progress is-primary is-small"
+                :value="movie.score"
+                max="5"
+              ></progress>
+            </p>
             <p class="card-footer-item">Year: {{movie.year}}</p>
+            <div class="card-footer-item">
+              <div class="dropdown is-hoverable">
+                <div class="dropdown-trigger">
+                  <p>Rate:</p>
+                  <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
+                    <span>
+                      {{userScore}}
+                      <i class="fas fa-star star" aria-hidden="true"></i>
+                    </span>
+                    <span class="icon is-small">
+                      <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+                  <div class="dropdown-content">
+                    <a @click="handleRating(1.0)" class="dropdown-item">
+                      (1)
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                    </a>
+                    <hr class="dropdown-divider" />
+                    <a @click="handleRating(2.0)" class="dropdown-item">
+                      (2)
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                    </a>
+                    <hr class="dropdown-divider" />
+                    <a @click="handleRating(3.0)" class="dropdown-item">
+                      (3)
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                    </a>
+                    <hr class="dropdown-divider" />
+                    <a @click="handleRating(4.0)" class="dropdown-item">
+                      (4)
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                    </a>
+                    <hr class="dropdown-divider" />
+                    <a @click="handleRating(5.0)" class="dropdown-item">
+                      (5)
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                      <i class="fas fa-star" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </footer>
         </div>
         <div class="card">
@@ -64,12 +125,53 @@
         </div>
         <div class="card">
           <div class="card-header-title">Comments:</div>
-          <div class="card-content">COMMENTS HERE</div>
+          <div class="card-content">
+            <div class="card" v-for="element in comments" :key="element.id">
+              <div class="card-header-title">
+                <p>{{element.user.username}}</p>
+              </div>
+
+              <div v-show="!editFlag" class="card-content">
+                <p>{{element.comment}}</p>
+                <small>{{element.date}}</small>
+              </div>
+              <textarea
+                v-show="editFlag && currentCommentId === element.id"
+                v-model="comment"
+                maxlength="255"
+                class="textarea"
+                :placeholder="element.comment"
+              ></textarea>
+              <div class="card-footer" v-show="username == element.user.username">
+                <div class="card-footer-item" />
+                <div class="columns is-mobile">
+                  <div class="column">
+                    <div>
+                      <i class="fas fa-times" @click="deleteComment(element.id)"></i>
+                    </div>
+                  </div>
+                  <div class="column">
+                    <div v-show="!editFlag">
+                      <i class="fas fa-edit" @click="toggleFlag(element.id, element.comment)"></i>
+                    </div>
+                    <div v-show="editFlag">
+                      <i class="fas fa-check" @click="updateComment(element.id)"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="control card-footer-item">
-            <textarea maxlength="255" class="textarea" placeholder="Write a comment..."></textarea>
+            <textarea
+              v-model="comment"
+              maxlength="255"
+              class="textarea"
+              placeholder="Write a comment..."
+            ></textarea>
           </div>
           <footer class="card-footer">
-            <button class="card-footer-item subtitle">Add Comment</button>
+            <button @click="makeComment()" class="card-footer-item subtitle">Add Comment</button>
           </footer>
         </div>
       </div>
@@ -80,7 +182,7 @@
             <p>{{movie.actors}}</p>
           </div>
         </div>
-        <RecommendedFriends />
+        <RecommendedFriends class="customFriends" />
       </div>
     </div>
   </div>
@@ -95,20 +197,160 @@ export default {
   data() {
     return {
       movie_id: this.$route.params.movie_id,
-      movie: {}
+      score: 0,
+      userScore: 0,
+      comment: "",
+      updatedComment: "",
+      editFlag: false,
+      currentCommentId: 0
     };
   },
   async mounted() {
-    const res = await axios.get(
-      `http://localhost:8080/api/movie/${this.movie_id}`,
-      { headers: { Token: this.$store.state.user.token } }
-    );
-    this.movie = res.data;
-    console.log(this.movie);
-    return res.data;
+    this.fetchMovie();
+    this.getUsrScore();
+    this.getComments();
+  },
+  computed: {
+    movie() {
+      return this.$store.state.tempMovie;
+    },
+    comments() {
+      return this.$store.state.movieComments;
+    },
+    username() {
+      return this.$store.state.user.user.username;
+    }
   },
   components: {
     RecommendedFriends
+  },
+  methods: {
+    async fetchMovie() {
+      const res = await axios.get(
+        `http://localhost:8080/api/movie/${this.movie_id}`,
+        { headers: { Token: this.$store.state.user.token } }
+      );
+      this.$store.dispatch("fetchTempMovie", res.data.movie);
+    },
+    async rateMovie(score) {
+      const data = {
+        imdbID: this.movie_id,
+        score: score
+      };
+      const res = await axios.post(
+        "http://localhost:8080/api/movie/score",
+        data,
+        { headers: { Token: this.$store.state.user.token } }
+      );
+
+      if (res.status === 200) {
+        console.log(res);
+        this.userScore = score;
+        this.fetchMovie();
+      }
+    },
+    async changeRating(score) {
+      const data = {
+        imdbID: this.movie_id,
+        score: score
+      };
+      const res = await axios.put(
+        "http://localhost:8080/api/movie/score",
+        data,
+        { headers: { Token: this.$store.state.user.token } }
+      );
+
+      if (res.status === 200) {
+        console.log(res);
+        this.userScore = score;
+        this.fetchMovie();
+      }
+    },
+    handleRating(score) {
+      if (this.userScore === 0.0) {
+        this.rateMovie(score);
+      } else {
+        this.changeRating(score);
+      }
+    },
+    async getUsrScore() {
+      const res = await axios.get(
+        `http://localhost:8080/api/movie/${this.movie_id}/score`,
+        { headers: { Token: this.$store.state.user.token } }
+      );
+
+      console.log("RESPONSE", res);
+      this.userScore = res.data;
+    },
+    getComments() {
+      this.$store.dispatch("fetchMovieComment", this.movie_id);
+    },
+    async makeComment() {
+      if (this.comment != "") {
+        const data = {
+          date: new Date().toISOString().substr(0, 10),
+          comment: this.comment
+        };
+        const res = await axios.post(
+          `http://localhost:8080/api/movie/${this.movie_id}/comment`,
+          data,
+          { headers: { Token: this.$store.state.user.token } }
+        );
+        this.comment = "";
+        this.getComments();
+        return res;
+      }
+    },
+    async deleteComment(id) {
+      const res = await axios.delete(
+        `http://localhost:8080/api/movie/comment/${id}`,
+        { headers: { Token: this.$store.state.user.token } }
+      );
+      this.getComments();
+      return res;
+    },
+    async updateComment(id) {
+      const data = {
+        comment: this.comment
+      };
+      const res = await axios.put(
+        `http://localhost:8080/api/movie/comment/${id}`,
+        data,
+        { headers: { Token: this.$store.state.user.token } }
+      );
+      this.editFlag = false;
+      this.getComments();
+      this.comment = "";
+      return res;
+    },
+    toggleFlag(id, comment) {
+      this.currentCommentId = id;
+      this.editFlag = true;
+      this.comment = comment;
+    },
+    addMovie() {
+      axios({
+        method: "get",
+        url: `http://localhost:8080/api/movie/${this.movie_id}`,
+        headers: {
+          Token: this.$store.state.user.token
+        }
+      }).then(() => {
+        axios({
+          method: "post",
+          url: `http://localhost:8080/api/watchlist`,
+          headers: {
+            Token: this.$store.state.user.token
+          },
+          data: {
+            imdbID: this.movie_id,
+            state: "PLAN_TO_WATCH"
+          }
+        }).then(() => {
+          this.$store.dispatch("get_user_movies");
+        });
+      });
+    }
   }
 };
 </script>
@@ -121,6 +363,20 @@ export default {
   background-color: $purple;
   p {
     margin: 3%;
+    color: $white;
+  }
+
+  .dropdown-content {
+    background-color: $black;
+  }
+
+  .customFriends {
+    background-color: $black;
+    -webkit-box-shadow: 0px 0px 22px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 22px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 22px 0px rgba(0, 0, 0, 0.75);
+  }
+  a {
     color: $white;
   }
 
@@ -146,6 +402,11 @@ export default {
     }
     .card-footer {
       background-color: $black;
+      border: none;
+
+      small {
+        color: $purple;
+      }
     }
     .card-footer-item {
       border: none;
@@ -162,6 +423,13 @@ export default {
   .card-footer {
     background-color: $purple;
     p {
+      color: $white;
+    }
+    i {
+      color: $purple;
+    }
+
+    .star {
       color: $white;
     }
   }
