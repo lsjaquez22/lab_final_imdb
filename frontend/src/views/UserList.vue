@@ -45,7 +45,7 @@ export default {
   background-color: $black;
   h1 {
     color: $white;
-    margin-top: 2em;
+    padding-top: 2em;
     margin-bottom: 1em;
   }
   .movies-container {

@@ -11,10 +11,15 @@
           </div>
           <div class="card-content">
             <footer class="card-footer">
-              <button @click="addMovie()" class="card-footer-item subtitle">
+              <button v-if="!in_watch_list" @click="addMovie()" class="card-footer-item subtitle">
                 Add Movie
                 <i class="fas fa-film"></i>
               </button>
+              <button
+                v-else
+                @click="deleteMovie()"
+                class="card-footer-item subtitle delete-movie"
+              >Delete Movie</button>
             </footer>
           </div>
         </div>
@@ -202,7 +207,8 @@ export default {
       comment: "",
       updatedComment: "",
       editFlag: false,
-      currentCommentId: 0
+      currentCommentId: 0,
+      in_watch_list: false
     };
   },
   async mounted() {
@@ -231,6 +237,7 @@ export default {
         { headers: { Token: this.$store.state.user.token } }
       );
       this.$store.dispatch("fetchTempMovie", res.data.movie);
+      this.in_watch_list = res.data.inWatchList;
     },
     async rateMovie(score) {
       const data = {
@@ -348,7 +355,22 @@ export default {
           }
         }).then(() => {
           this.$store.dispatch("get_user_movies");
+          this.$store.dispatch("get_recommended_movies");
+          this.in_watch_list = true;
         });
+      });
+    },
+    deleteMovie() {
+      axios({
+        method: "delete",
+        url: `http://localhost:8080/api/watchlist/${this.movie_id}`,
+        headers: {
+          Token: this.$store.state.user.token
+        }
+      }).then(() => {
+        this.$store.dispatch("get_user_movies");
+        this.$store.dispatch("get_recommended_movies");
+        this.in_watch_list = false;
       });
     }
   }
@@ -383,6 +405,9 @@ export default {
   button {
     background-color: $purple;
     color: $white;
+  }
+  .delete-movie {
+    background-color: $red;
   }
 
   .actors-card {

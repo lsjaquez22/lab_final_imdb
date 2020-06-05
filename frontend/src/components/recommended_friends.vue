@@ -34,9 +34,18 @@ export default {
 
 .recomended-friends {
   margin: 0 1em;
+  margin-bottom: 2em;
   .subtitle {
     color: $white;
     font-weight: bold;
+  }
+}
+
+@media only screen and (max-width: 770px) {
+  #app {
+    .recomended-friends {
+      padding-bottom: 3em;
+    }
   }
 }
 </style>
