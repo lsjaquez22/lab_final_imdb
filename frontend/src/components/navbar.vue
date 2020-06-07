@@ -9,7 +9,7 @@
       >
         <div class="navbar-brand">
           <router-link class="navbar-item" to="/">
-            <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28" />
+            <p>TLALOC Movies</p>
           </router-link>
 
           <a
@@ -70,9 +70,9 @@
         aria-label="main navigation"
       >
         <div class="navbar-brand">
-          <a class="navbar-item" href="https://bulma.io">
-            <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28" />
-          </a>
+          <router-link class="navbar-item" to="/">
+            <p>TLALOC Movies</p>
+          </router-link>
 
           <a
             role="button"
@@ -162,6 +162,14 @@ export default {
 a {
   font-size: 20px;
   font-weight: bold;
+}
+.navbar-item {
+  p {
+    color: $white;
+  }
+  p:hover {
+    color: $white;
+  }
 }
 
 #app {
